@@ -17,6 +17,10 @@ namespace NzbDrone.Core.Update
 
     public class UpdatePackageProvider : IUpdatePackageProvider
     {
+        // Materia: Prowlarr's update server only has Prowlarr builds, which would
+        // replace Materia. New Materia versions come from GitHub Releases instead.
+        private const bool UpdateServerDisabled = true;
+
         private readonly IHttpClient _httpClient;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IPlatformInfo _platformInfo;
@@ -31,10 +35,6 @@ namespace NzbDrone.Core.Update
             _httpClient = httpClient;
             _mainDatabase = mainDatabase;
         }
-
-        // Materia: Prowlarr's update server only has Prowlarr builds, which would
-        // replace Materia. New Materia versions come from GitHub Releases instead.
-        private const bool UpdateServerDisabled = true;
 
         public UpdatePackage GetLatestUpdate(string branch, Version currentVersion)
         {
