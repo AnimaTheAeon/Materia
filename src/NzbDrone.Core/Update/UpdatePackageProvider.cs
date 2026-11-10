@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Update
 
         // Materia: Prowlarr's update server only has Prowlarr builds, which would
         // replace Materia. New Materia versions come from GitHub Releases instead.
-        private static readonly bool UpdateServerDisabled = true;
+        private const bool UpdateServerDisabled = true;
 
         public UpdatePackage GetLatestUpdate(string branch, Version currentVersion)
         {
