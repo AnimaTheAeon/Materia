@@ -44,4 +44,4 @@ Local web interface build: `yarn install && yarn build --env production` (output
 
 ## License
 
-GPL-3.0, the same as Prowlarr. See [LICENSE](LICENSE). Nunito and Orbitron fonts: SIL Open Font License font: SIL Open Font License (`frontend/src/Content/Fonts/`).
+GPL-3.0, the same as Prowlarr. See [LICENSE](LICENSE). Nunito and Orbitron fonts: SIL Open Font License (`frontend/src/Content/Fonts/`).
