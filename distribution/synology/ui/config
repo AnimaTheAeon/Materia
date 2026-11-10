@@ -1,0 +1,16 @@
+{
+	".url": {
+		"Materia": {
+			"type": "url",
+			"protocol": "http",
+			"port": "9696",
+			"url": "/",
+			"title": "Materia",
+			"desc": "Indexer manager",
+			"icon": "images/materia_{0}.png",
+			"allUsers": true,
+			"grantPrivilege": "all",
+			"advanceGrantPrivilege": true
+		}
+	}
+}

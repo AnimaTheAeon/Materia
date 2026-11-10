@@ -1,0 +1,112 @@
+.cell {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
+.status {
+  composes: cell;
+
+  flex: 0 0 60px;
+}
+
+.id {
+  composes: cell;
+
+  flex: 0 0 60px;
+}
+
+.sortName {
+  composes: cell;
+
+  flex: 4 0 190px;
+}
+
+.priority,
+.protocol,
+.privacy,
+.minimumSeeders,
+.seedRatio,
+.seedTime,
+.packSeedTime,
+.preferMagnetUrl {
+  composes: cell;
+
+  flex: 0 0 90px;
+}
+
+.appProfileId {
+  composes: cell;
+
+  flex: 1 0 125px;
+}
+
+.capabilities {
+  composes: cell;
+
+  flex: 0 0 350px;
+}
+
+.added,
+.vipExpiration {
+  composes: cell;
+
+  flex: 0 0 125px;
+}
+
+.tags {
+  composes: cell;
+
+  flex: 1 0 60px;
+}
+
+.actions {
+  composes: cell;
+
+  flex: 0 1 90px;
+  min-width: 90px;
+}
+
+.checkInput {
+  composes: input from '~Components/Form/CheckInput.css';
+
+  margin-top: 0;
+}
+
+.externalLink {
+  composes: button from '~Components/Link/IconButton.css';
+
+  color: var(--textColor);
+}
+
+.materiaSquare {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  margin-right: 10px;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--windowBorderLight);
+  border-radius: 3px;
+  background: linear-gradient(135deg, #2e56be 0%, #0c145a 100%);
+  box-shadow: inset 0 -3px 0 rgba(120, 230, 140, 0.55);
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.privateSquare {
+  box-shadow: inset 0 -3px 0 rgba(201, 155, 255, 0.7);
+}
+
+.usenetSquare {
+  box-shadow: inset 0 -3px 0 rgba(255, 226, 96, 0.7);
+}
+
+.disabledSquare {
+  box-shadow: inset 0 -3px 0 rgba(255, 110, 110, 0.7);
+  opacity: 0.5;
+}

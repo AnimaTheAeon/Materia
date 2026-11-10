@@ -1,0 +1,140 @@
+name: Build Materia
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FRAMEWORK: net10.0
+
+jobs:
+  ui:
+    name: Web interface
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - name: Install packages
+        run: yarn install --frozen-lockfile --network-timeout 120000
+      - name: Lint
+        run: yarn lint && yarn stylelint-linux
+      - name: Build
+        run: yarn build --env production
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ui
+          path: _output/UI
+
+  windows:
+    name: Windows
+    needs: ui
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Set version
+        run: |
+          v=$(tr -d ' \r\n' < VERSION)
+          echo "MATERIAVERSION=$v" >> "$GITHUB_ENV"
+          echo "PROWLARRVERSION=$v.${{ github.run_number }}" >> "$GITHUB_ENV"
+      - name: Build backend
+        run: ./build.sh --backend -r win-x64 -f "$FRAMEWORK"
+      - uses: actions/download-artifact@v4
+        with:
+          name: ui
+          path: _output/UI
+      - name: Package
+        run: ./build.sh --packages -r win-x64 -f "$FRAMEWORK"
+      - name: Build installer
+        run: ./build.sh --installer
+      - name: Zip portable copy
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item "distribution/windows/setup/output/Materia-Setup-$env:MATERIAVERSION.exe" dist/
+          Compress-Archive -Path "_artifacts/win-x64/$env:FRAMEWORK/Prowlarr/*" -DestinationPath "dist/Materia-$env:MATERIAVERSION-windows-x64-portable.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: materia-windows
+          path: dist/*
+
+  synology:
+    name: Synology
+    needs: ui
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Set version
+        run: |
+          v=$(tr -d ' \r\n' < VERSION)
+          echo "MATERIAVERSION=$v" >> "$GITHUB_ENV"
+          echo "PROWLARRVERSION=$v.${{ github.run_number }}" >> "$GITHUB_ENV"
+      - name: Build backend
+        run: ./build.sh --backend -r linux-x64 -f "$FRAMEWORK"
+      - uses: actions/download-artifact@v4
+        with:
+          name: ui
+          path: _output/UI
+      - name: Package
+        run: ./build.sh --packages -r linux-x64 -f "$FRAMEWORK"
+      - name: Build .spk
+        run: BUILD_NUMBER=$(printf '%04d' ${{ github.run_number }}) distribution/synology/build-spk.sh "_artifacts/linux-x64/$FRAMEWORK/Prowlarr" dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: materia-synology
+          path: dist/*.spk
+
+  release:
+    name: Release
+    needs: [windows, synology]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+          pattern: materia-*
+      - name: Check for existing release
+        id: rel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(tr -d ' \r\n' < VERSION)
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if gh release view "v$v" --repo "${{ github.repository }}" > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      # Bump VERSION to publish a new release; pushes without a bump only build.
+      - name: Publish release
+        if: steps.rel.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.rel.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: Materia v${{ steps.rel.outputs.version }}
+          files: dist/*
+          make_latest: true
+          body: |
+            **Windows:** run `Materia-Setup-*.exe` (no admin needed). Materia opens in your browser at http://localhost:9696. Your data is kept in `%APPDATA%\Materia`.
+            **Synology (DS923+ and other x86-64 models, DSM 7.2):** Package Center → Manual Install → choose `Materia-*-x86_64.spk`. Then open Materia from the main menu or go to http://your-nas:9696.

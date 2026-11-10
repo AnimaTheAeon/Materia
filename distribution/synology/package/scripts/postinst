@@ -1,0 +1,11 @@
+#!/bin/sh
+mkdir -p "$SYNOPKG_PKGVAR"
+chmod 755 "$SYNOPKG_PKGDEST/bin/Prowlarr" 2>/dev/null
+{
+cat << 'NOTE'
+<p style="font-weight:bold;">Materia is installed</p>
+<p>Open <b>Materia</b> from the main menu, or go to <b>http://your-nas:9696</b>. On first visit it asks you to set a username and password.</p>
+<p>Point Sonarr and Radarr at Materia under <b>Config</b> &rarr; <b>Apps</b>.</p>
+NOTE
+} >> "$SYNOPKG_TEMP_LOGFILE"
+exit 0
