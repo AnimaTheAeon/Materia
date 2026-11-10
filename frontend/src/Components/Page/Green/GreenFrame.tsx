@@ -19,6 +19,7 @@ import {
   pageLinks,
 } from 'Components/Page/Sidebar/PageSidebar';
 import { fetchHealth } from 'Store/Actions/systemActions';
+import { sinkIntoGlow, zoomIntoOrb, zoomOutOfOrb } from './orbZoom';
 import styles from './GreenFrame.css';
 
 interface MenuLink {
@@ -105,7 +106,7 @@ function Background({ home }: { home: boolean }) {
 
 function BigOrb() {
   return (
-    <div className={styles.orbWrap} aria-hidden="true">
+    <div className={styles.orbWrap} aria-hidden="true" data-big-orb={true}>
       <div className={classNames(styles.shell, styles.s1)} />
       <div className={classNames(styles.shell, styles.s4)} />
       <div className={classNames(styles.shell, styles.s2)} />
@@ -250,7 +251,7 @@ function GreenFrame({ location, children }: GreenFrameProps) {
     }
   }, [isHealthPopulated, dispatch]);
 
-  const open = useCallback(
+  const openNow = useCallback(
     (index: number) => {
       const link = links[index];
 
@@ -264,11 +265,32 @@ function GreenFrame({ location, children }: GreenFrameProps) {
     [history, pathname, urlBase]
   );
 
-  const goHome = useCallback(() => {
+  // From home, zoom into the orb first.
+  const open = useCallback(
+    (index: number) => {
+      if (atHome) {
+        zoomIntoOrb(() => openNow(index));
+      } else {
+        openNow(index);
+      }
+    },
+    [atHome, openNow]
+  );
+
+  const goHomeNow = useCallback(() => {
     // The cursor lands on the page you just left.
     setCursor(sectionIndex(pathname));
     setAtHome(true);
   }, [pathname]);
+
+  // BACK: the page sinks into the glow, then the orb shrinks back.
+  const goHome = useCallback(() => sinkIntoGlow(goHomeNow), [goHomeNow]);
+
+  useEffect(() => {
+    if (atHome) {
+      zoomOutOfOrb();
+    }
+  }, [atHome]);
 
   // Keyboard: arrows + Enter on the home screen, Esc for BACK on pages.
   useEffect(() => {
