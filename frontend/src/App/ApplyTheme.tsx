@@ -1,31 +1,18 @@
-import { useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
+import { useEffect } from 'react';
+import useTheme from 'Helpers/Hooks/useTheme';
 import themes from 'Styles/Themes';
-import AppState from './State/AppState';
-
-function createThemeSelector() {
-  return createSelector(
-    (state: AppState) => state.settings.ui.item.theme || window.Prowlarr.theme,
-    (theme) => {
-      return theme;
-    }
-  );
-}
 
 function ApplyTheme() {
-  const theme = useSelector(createThemeSelector());
+  const theme = useTheme();
 
-  const updateCSSVariables = useCallback(() => {
-    Object.entries(themes[theme]).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--${key}`, value);
-    });
-  }, [theme]);
-
-  // On Component Mount and Component Update
   useEffect(() => {
-    updateCSSVariables();
-  }, [updateCSSVariables, theme]);
+    Object.entries(themes[theme]).forEach(([key, value]) => {
+      document.documentElement.style.setProperty(`--${key}`, value as string);
+    });
+
+    // Lets global styles (fonts, upper-case headings) follow the theme.
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   return null;
 }

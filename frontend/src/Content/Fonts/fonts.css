@@ -43,3 +43,13 @@
   src: url('Nunito-800.ttf') format('truetype');
   font-display: swap;
 }
+
+/* Orbitron (SIL Open Font License, see Orbitron-OFL.txt) for Box of X headings */
+
+@font-face {
+  font-weight: 800;
+  font-style: normal;
+  font-family: 'Orbitron';
+  src: url('Orbitron-800.ttf') format('truetype');
+  font-display: swap;
+}

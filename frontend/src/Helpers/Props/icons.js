@@ -80,6 +80,7 @@ import {
   faMedkit as fasMedkit,
   faMinus as fasMinus,
   faMusic as fasMusic,
+  faPalette as fasPalette,
   faPause as fasPause,
   faPlay as fasPlay,
   faPlus as fasPlus,
@@ -186,6 +187,7 @@ export const KEYBOARD = farKeyboard;
 export const LOCK = fasLock;
 export const LOGOUT = fasSignOutAlt;
 export const MAGNET = fasMagnet;
+export const PALETTE = fasPalette;
 export const LIFESTREAM = fasWater;
 export const MANAGE = fasListCheck;
 export const MEDIA_INFO = farFileInvoice;

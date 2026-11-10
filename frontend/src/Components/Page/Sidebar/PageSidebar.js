@@ -16,7 +16,7 @@ import styles from './PageSidebar.css';
 const HEADER_HEIGHT = parseInt(dimensions.headerHeight);
 const SIDEBAR_WIDTH = parseInt(dimensions.sidebarWidth);
 
-const links = [
+export const pageLinks = [
   {
     iconName: icons.MOVIE_CONTINUING,
     title: () => translate('Indexers'),
@@ -112,10 +112,10 @@ const links = [
   }
 ];
 
-function getActiveParent(pathname) {
-  let activeParent = links[0].to;
+export function getActiveParent(pathname) {
+  let activeParent = pageLinks[0].to;
 
-  links.forEach((link) => {
+  pageLinks.forEach((link) => {
     if (link.to && link.to === pathname) {
       activeParent = link.to;
 
@@ -405,7 +405,7 @@ class PageSidebar extends Component {
         >
           <div>
             {
-              links.map((link) => {
+              pageLinks.map((link) => {
                 const childWithStatusComponent = _.find(link.children, (child) => {
                   return !!child.statusComponent;
                 });
