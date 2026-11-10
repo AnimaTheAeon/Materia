@@ -1,0 +1,40 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--pageBackground);
+}
+
+.main {
+  position: relative; /* need this to position inner content - is this really needed? */
+  display: flex;
+  flex: 1 1 auto;
+  gap: 12px;
+
+  overflow: hidden;
+  padding: 0 12px 12px;
+}
+
+.rightColumn {
+  display: flex;
+  flex: 0 0 $sidebarWidth;
+  flex-direction: column;
+  width: $sidebarWidth;
+  gap: 12px;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .page {
+    flex-grow: 1;
+    height: initial;
+  }
+
+  .main {
+    padding: 0 6px 6px;
+  }
+
+  .rightColumn {
+    flex: 0 0 0;
+    width: 0;
+  }
+}

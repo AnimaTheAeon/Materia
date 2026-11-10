@@ -1,0 +1,82 @@
+.header {
+  @add-mixin ffWindow;
+
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin: 12px;
+  height: $headerHeight;
+  color: var(--white);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0 16px 0 12px;
+}
+
+.titleLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+
+.appTitle {
+  letter-spacing: 0.5px;
+  font-weight: 800;
+  font-size: 26px;
+}
+
+.logoFull,
+.logo {
+  vertical-align: middle;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+.sidebarToggleContainer {
+  display: none;
+  justify-content: center;
+  flex: 0 0 45px;
+  margin-right: 14px;
+}
+
+.right {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  padding-right: 6px;
+}
+
+.actionMenu {
+  &:hover {
+    color: var(--themeBlue);
+  }
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .header {
+    margin: 6px;
+  }
+
+  .appTitle {
+    display: none;
+  }
+
+  .sidebarToggleContainer {
+    display: flex;
+  }
+}

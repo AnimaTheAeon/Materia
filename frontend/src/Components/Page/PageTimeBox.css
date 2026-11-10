@@ -1,0 +1,24 @@
+.timeBox {
+  @add-mixin ffWindow;
+
+  margin-top: auto;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.9;
+}
+
+.label {
+  color: var(--statLabelColor);
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .timeBox {
+    display: none;
+  }
+}
