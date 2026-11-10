@@ -1,48 +1,24 @@
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
 import themes from 'Styles/Themes';
 
-function createThemeSelector() {
+export type MateriaLook = 'materia' | 'green';
+
+// "green" is Box of X; anything else (materia, auto, dark, light) is the FFVII menu.
+export function resolveTheme(theme: string | undefined): MateriaLook {
+  return theme === 'green' ? 'green' : 'materia';
+}
+
+export function createThemeSelector() {
   return createSelector(
     (state: AppState) => state.settings.ui.item.theme || window.Prowlarr.theme,
-    (theme) => theme
+    (theme) => resolveTheme(theme)
   );
 }
 
-const useTheme = () => {
-  const selectedTheme = useSelector(createThemeSelector());
-  const [resolvedTheme, setResolvedTheme] = useState(selectedTheme);
-
-  useEffect(() => {
-    if (selectedTheme !== 'auto') {
-      setResolvedTheme(selectedTheme);
-      return;
-    }
-
-    const applySystemTheme = () => {
-      setResolvedTheme(
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
-      );
-    };
-
-    applySystemTheme();
-
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', applySystemTheme);
-
-    return () => {
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .removeEventListener('change', applySystemTheme);
-    };
-  }, [selectedTheme]);
-
-  return resolvedTheme;
+const useTheme = (): MateriaLook => {
+  return useSelector(createThemeSelector());
 };
 
 export default useTheme;

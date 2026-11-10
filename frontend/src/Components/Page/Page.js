@@ -6,6 +6,7 @@ import ConnectionLostModal from 'App/ConnectionLostModal';
 import SignalRConnector from 'Components/SignalRConnector';
 import AuthenticationRequiredModal from 'FirstRun/AuthenticationRequiredModal';
 import locationShape from 'Helpers/Props/Shapes/locationShape';
+import GreenFrame from './Green/GreenFrame';
 import PageHeader from './Header/PageHeader';
 import PageStatusBar from './PageStatusBar';
 import PageTimeBox from './PageTimeBox';
@@ -79,6 +80,7 @@ class Page extends Component {
       isSidebarVisible,
       enableColorImpairedMode,
       authenticationEnabled,
+      isGreenTheme,
       onSidebarToggle,
       onSidebarVisibleChange
     } = this.props;
@@ -88,27 +90,35 @@ class Page extends Component {
         <div className={className}>
           <SignalRConnector />
 
-          <PageHeader
-            onSidebarToggle={onSidebarToggle}
-            isSmallScreen={isSmallScreen}
-          />
+          {
+            isGreenTheme ?
+              <GreenFrame location={location}>
+                {children}
+              </GreenFrame> :
+              <>
+                <PageHeader
+                  onSidebarToggle={onSidebarToggle}
+                  isSmallScreen={isSmallScreen}
+                />
 
-          <div className={styles.main}>
-            {children}
+                <div className={styles.main}>
+                  {children}
 
-            <div className={styles.rightColumn}>
-              <PageSidebar
-                location={location}
-                isSmallScreen={isSmallScreen}
-                isSidebarVisible={isSidebarVisible}
-                onSidebarVisibleChange={onSidebarVisibleChange}
-              />
+                  <div className={styles.rightColumn}>
+                    <PageSidebar
+                      location={location}
+                      isSmallScreen={isSmallScreen}
+                      isSidebarVisible={isSidebarVisible}
+                      onSidebarVisibleChange={onSidebarVisibleChange}
+                    />
 
-              <PageTimeBox />
-            </div>
-          </div>
+                    <PageTimeBox />
+                  </div>
+                </div>
 
-          <PageStatusBar />
+                <PageStatusBar />
+              </>
+          }
 
           <AppUpdatedModal
             isOpen={this.state.isUpdatedModalOpen}
@@ -139,6 +149,7 @@ Page.propTypes = {
   isDisconnected: PropTypes.bool.isRequired,
   enableColorImpairedMode: PropTypes.bool.isRequired,
   authenticationEnabled: PropTypes.bool.isRequired,
+  isGreenTheme: PropTypes.bool.isRequired,
   onResize: PropTypes.func.isRequired,
   onSidebarToggle: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired

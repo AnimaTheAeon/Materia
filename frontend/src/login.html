@@ -81,6 +81,18 @@
         height: 32px;
       }
 
+      [data-theme='green'] body {
+        background: radial-gradient(ellipse at 50% 40%, #165c10 0%, #0a3608 30%, #041c04 62%, #010a01 100%) !important;
+      }
+
+      [data-theme='green'] .panel {
+        border-color: rgba(160, 255, 80, 0.75) !important;
+        border-radius: 0 !important;
+        background: linear-gradient(135deg, rgba(26, 86, 12, 0.88) 0%, rgba(14, 60, 8, 0.88) 40%, rgba(10, 48, 6, 0.9) 60%, rgba(3, 22, 3, 0.92) 100%) !important;
+        box-shadow: none !important;
+        clip-path: polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+      }
+
       .panel {
         border: 2px solid #d6d8e4;
         border-radius: 7px;
@@ -362,10 +374,32 @@
       forgotPasswordAltColor: '#b8e6ff',
     };
 
+    var green = {
+      white: '#fff',
+      pageBackground: '#020c02',
+      textColor: '#e4ffc4',
+      themeDarkColor: 'transparent',
+      panelBackground: 'transparent',
+      inputBackgroundColor: '#041c04',
+      inputBorderColor: '#50a028',
+      inputBoxShadowColor: 'rgba(0, 0, 0, 0.2)',
+      inputFocusBorderColor: '#a0ff50',
+      inputFocusBoxShadowColor: 'rgba(200, 255, 74, 0.4)',
+      primaryBackgroundColor: '#4e9a14',
+      primaryBorderColor: '#a0ff50',
+      primaryHoverBackgroundColor: '#62b41c',
+      primaryHoverBorderColor: '#e2ff6a',
+      failedColor: '#ff7a5a',
+      forgotPasswordColor: '#c8ff4a',
+      forgotPasswordAltColor: '#f0ffb0',
+    };
+
     var theme = '_THEME_';
-    var defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var finalTheme =
-      theme === 'light' ? light : theme === 'dark' ? dark : materia;
+    var finalTheme = theme === 'green' ? green : materia;
+
+    if (theme === 'green') {
+      document.documentElement.setAttribute('data-theme', 'green');
+    }
 
     Object.entries(finalTheme).forEach(([key, value]) => {
       document.documentElement.style.setProperty(`--${key}`, value);

@@ -1,9 +1,11 @@
 .modalHeader {
   @add-mixin truncate;
+  @add-mixin displayText;
 
   flex-shrink: 0;
   padding: 15px 50px 15px 30px;
   border-bottom: 1px solid var(--windowBorderMid);
+
   font-weight: 800;
-  font-size: 20px;
+  font-size: calc(20px * var(--displayScale));
 }

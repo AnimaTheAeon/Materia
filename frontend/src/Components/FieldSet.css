@@ -7,6 +7,7 @@
 }
 
 .legend {
+  @add-mixin displayText;
   display: block;
   margin-bottom: 21px;
   padding: 0;
@@ -14,7 +15,8 @@
   border: 0;
   border-bottom: 1px solid var(--windowBorderMid);
   color: var(--textColor);
+
   font-weight: 800;
-  font-size: 21px;
+  font-size: calc(21px * var(--displayScale));
   line-height: inherit;
 }

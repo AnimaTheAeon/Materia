@@ -89,10 +89,10 @@
   width: 28px;
   height: 28px;
   border: 2px solid var(--windowBorderLight);
-  border-radius: 3px;
-  background: linear-gradient(135deg, #2e56be 0%, #0c145a 100%);
+  border-radius: var(--squareRadius);
+  background: var(--squareBackground);
   box-shadow: inset 0 -3px 0 rgba(120, 230, 140, 0.55);
-  color: #fff;
+  color: var(--squareTextColor);
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
   font-weight: 800;
   font-size: 15px;
