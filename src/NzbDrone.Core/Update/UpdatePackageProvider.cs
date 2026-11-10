@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using NzbDrone.Common.Cloud;
+using System.Linq;
+using Newtonsoft.Json;
+using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Analytics;
-using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Update
 {
@@ -15,92 +15,180 @@ namespace NzbDrone.Core.Update
         List<UpdatePackage> GetRecentUpdates(string branch, Version currentVersion, Version previousVersion = null);
     }
 
+    // Materia gets its updates from the GitHub Releases of AnimaTheAeon/Materia,
+    // not from Prowlarr's update server (which only has Prowlarr builds).
     public class UpdatePackageProvider : IUpdatePackageProvider
     {
-        // Materia: Prowlarr's update server only has Prowlarr builds, which would
-        // replace Materia. New Materia versions come from GitHub Releases instead.
-        private const bool UpdateServerDisabled = true;
+        private const string ReleasesUrl = "https://api.github.com/repos/AnimaTheAeon/Materia/releases";
+        private const string WindowsAssetSuffix = "-windows-x64-update.zip";
+        private const string SynologyAssetSuffix = "-x86_64.spk";
 
         private readonly IHttpClient _httpClient;
-        private readonly IHttpRequestBuilderFactory _requestBuilder;
-        private readonly IPlatformInfo _platformInfo;
-        private readonly IAnalyticsService _analyticsService;
-        private readonly IMainDatabase _mainDatabase;
+        private readonly Logger _logger;
 
-        public UpdatePackageProvider(IHttpClient httpClient, IProwlarrCloudRequestBuilder requestBuilder, IAnalyticsService analyticsService, IPlatformInfo platformInfo, IMainDatabase mainDatabase)
+        public UpdatePackageProvider(IHttpClient httpClient, Logger logger)
         {
-            _platformInfo = platformInfo;
-            _analyticsService = analyticsService;
-            _requestBuilder = requestBuilder.Services;
             _httpClient = httpClient;
-            _mainDatabase = mainDatabase;
+            _logger = logger;
         }
 
         public UpdatePackage GetLatestUpdate(string branch, Version currentVersion)
         {
-            if (BuildInfo.IsDebug || UpdateServerDisabled)
+            if (BuildInfo.IsDebug)
             {
                 return null;
             }
 
-            var request = _requestBuilder.Create()
-                .Resource("/update/{branch}")
-                .AddQueryParam("version", currentVersion)
-                .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
-                .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
-                .AddQueryParam("runtime", "netcore")
-                .AddQueryParam("runtimeVer", _platformInfo.Version)
-                .AddQueryParam("dbType", _mainDatabase.DatabaseType)
-                .AddQueryParam("includeMajorVersion", true)
-                .SetSegment("branch", branch);
-
-            if (_analyticsService.IsEnabled)
-            {
-                // Send if the system is active so we know which versions to deprecate/ignore
-                request.AddQueryParam("active", _analyticsService.InstallIsActive.ToString().ToLower());
-            }
-
-            var update = _httpClient.Get<UpdatePackageAvailable>(request.Build()).Resource;
-
-            if (!update.Available)
-            {
-                return null;
-            }
-
-            return update.UpdatePackage;
+            return GetPackages(branch)
+                .Where(p => p.Version > currentVersion)
+                .OrderByDescending(p => p.Version)
+                .FirstOrDefault();
         }
 
         public List<UpdatePackage> GetRecentUpdates(string branch, Version currentVersion, Version previousVersion)
         {
-            if (BuildInfo.IsDebug || UpdateServerDisabled)
+            if (BuildInfo.IsDebug)
             {
                 return new List<UpdatePackage>();
             }
 
-            var request = _requestBuilder.Create()
-                .Resource("/update/{branch}/changes")
-                .AddQueryParam("version", currentVersion)
-                .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
-                .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
-                .AddQueryParam("runtime", "netcore")
-                .AddQueryParam("runtimeVer", _platformInfo.Version)
-                .AddQueryParam("dbType", _mainDatabase.DatabaseType)
-                .SetSegment("branch", branch);
+            return GetPackages(branch)
+                .OrderByDescending(p => p.Version)
+                .Take(10)
+                .ToList();
+        }
 
-            if (previousVersion != null && previousVersion != currentVersion)
+        private List<UpdatePackage> GetPackages(string branch)
+        {
+            var request = new HttpRequestBuilder(ReleasesUrl)
+                .AddQueryParam("per_page", 20)
+                .Accept(HttpAccept.Json)
+                .Build();
+
+            request.Headers.Add("X-GitHub-Api-Version", "2022-11-28");
+
+            var releases = _httpClient.Get<List<GitHubRelease>>(request).Resource ?? new List<GitHubRelease>();
+            var suffix = OsInfo.IsWindows ? WindowsAssetSuffix : SynologyAssetSuffix;
+            var packages = new List<UpdatePackage>();
+
+            foreach (var release in releases.Where(r => !r.Draft && !r.Prerelease))
             {
-                request.AddQueryParam("prevVersion", previousVersion);
+                if (!Version.TryParse(release.TagName?.TrimStart('v', 'V'), out var version))
+                {
+                    continue;
+                }
+
+                // Tags are "v1.2.3"; installed builds are "1.2.3.<build>". Treat the
+                // release you're running as your exact version so it shows as installed.
+                var current = BuildInfo.Version;
+
+                if (version.Major == current.Major && version.Minor == current.Minor && Math.Max(version.Build, 0) == Math.Max(current.Build, 0))
+                {
+                    version = current;
+                }
+
+                var asset = release.Assets?.FirstOrDefault(a => a.Name != null && a.Name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase));
+
+                if (asset == null)
+                {
+                    continue;
+                }
+
+                packages.Add(new UpdatePackage
+                {
+                    Version = version,
+                    ReleaseDate = release.PublishedAt ?? DateTime.UtcNow,
+                    FileName = asset.Name,
+                    Url = asset.BrowserDownloadUrl,
+                    Hash = GetHash(asset, release),
+                    Branch = branch,
+                    Changes = GetChanges(release.Body)
+                });
             }
 
-            if (_analyticsService.IsEnabled)
+            return packages;
+        }
+
+        private string GetHash(GitHubAsset asset, GitHubRelease release)
+        {
+            if (asset.Digest.IsNotNullOrWhiteSpace() && asset.Digest.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase))
             {
-                // Send if the system is active so we know which versions to deprecate/ignore
-                request.AddQueryParam("active", _analyticsService.InstallIsActive.ToString().ToLower());
+                return asset.Digest.Substring("sha256:".Length);
             }
 
-            var updates = _httpClient.Get<List<UpdatePackage>>(request.Build());
+            // Older GitHub responses have no digest; the build also publishes "<file>.sha256".
+            var hashAsset = release.Assets.FirstOrDefault(a => a.Name == asset.Name + ".sha256");
 
-            return updates.Resource;
+            if (hashAsset == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var text = _httpClient.Get(new HttpRequest(hashAsset.BrowserDownloadUrl)).Content;
+
+                return text.Trim().Split(' ', '\t', '\r', '\n').FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Couldn't read the checksum for {0}", asset.Name);
+
+                return null;
+            }
+        }
+
+        private static UpdateChanges GetChanges(string body)
+        {
+            var changes = new UpdateChanges();
+
+            if (body.IsNullOrWhiteSpace())
+            {
+                return changes;
+            }
+
+            foreach (var line in body.Split('\n').Select(l => l.Trim()))
+            {
+                if (line.StartsWith("- ", StringComparison.Ordinal) || line.StartsWith("* ", StringComparison.Ordinal))
+                {
+                    changes.New.Add(line.Substring(2).Trim());
+                }
+            }
+
+            return changes;
+        }
+
+        private class GitHubRelease
+        {
+            [JsonProperty("tag_name")]
+            public string TagName { get; set; }
+
+            [JsonProperty("body")]
+            public string Body { get; set; }
+
+            [JsonProperty("draft")]
+            public bool Draft { get; set; }
+
+            [JsonProperty("prerelease")]
+            public bool Prerelease { get; set; }
+
+            [JsonProperty("published_at")]
+            public DateTime? PublishedAt { get; set; }
+
+            [JsonProperty("assets")]
+            public List<GitHubAsset> Assets { get; set; }
+        }
+
+        private class GitHubAsset
+        {
+            [JsonProperty("name")]
+            public string Name { get; set; }
+
+            [JsonProperty("browser_download_url")]
+            public string BrowserDownloadUrl { get; set; }
+
+            [JsonProperty("digest")]
+            public string Digest { get; set; }
         }
     }
 }

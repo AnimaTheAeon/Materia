@@ -44,7 +44,7 @@ Name: "desktopIcon"; Description: "{cm:CreateDesktopIcon}"
 Name: "startupShortcut"; Description: "Start Materia when I sign in to Windows"; GroupDescription: "Start automatically"
 
 [Files]
-Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Prowlarr\*"; Excludes: "Prowlarr.Update"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\..\_artifacts\{#Runtime}\{#Framework}\Prowlarr\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\bin\{#AppExeName}"; WorkingDir: "{app}\bin"; IconFilename: "{app}\bin\{#AppExeName}"

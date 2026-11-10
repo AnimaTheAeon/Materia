@@ -32,9 +32,7 @@ namespace NzbDrone.Core.Configuration
             var packageInfoPath = Path.Combine(bin, "..", "package_info");
             var releaseInfoPath = Path.Combine(bin, "release_info");
 
-            // Materia updates come from GitHub Releases, never from Prowlarr's servers.
-            PackageUpdateMechanism = UpdateMechanism.External;
-            PackageUpdateMechanismMessage = "Get new versions of Materia from github.com/AnimaTheAeon/Materia/releases";
+            PackageUpdateMechanism = UpdateMechanism.BuiltIn;
             DefaultBranch = "master";
 
             if (Path.GetFileName(bin) == "bin" && diskProvider.FileExists(packageInfoPath))
@@ -43,8 +41,8 @@ namespace NzbDrone.Core.Configuration
 
                 PackageVersion = ReadValue(data, "PackageVersion");
                 PackageAuthor = ReadValue(data, "PackageAuthor");
-                PackageUpdateMechanism = ReadEnumValue(data, "UpdateMethod", UpdateMechanism.External);
-                PackageUpdateMechanismMessage = ReadValue(data, "UpdateMethodMessage", PackageUpdateMechanismMessage);
+                PackageUpdateMechanism = ReadEnumValue(data, "UpdateMethod", UpdateMechanism.BuiltIn);
+                PackageUpdateMechanismMessage = ReadValue(data, "UpdateMethodMessage");
                 PackageBranch = ReadValue(data, "Branch");
 
                 ReleaseVersion = ReadValue(data, "ReleaseVersion");
