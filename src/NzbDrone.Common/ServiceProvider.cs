@@ -24,7 +24,7 @@ namespace NzbDrone.Common
 
     public class ServiceProvider : IServiceProvider
     {
-        public const string SERVICE_NAME = "Prowlarr";
+        public const string SERVICE_NAME = "Materia";
 
         private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;

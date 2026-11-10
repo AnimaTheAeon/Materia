@@ -61,12 +61,17 @@ jobs:
         run: ./build.sh --packages -r win-x64 -f "$FRAMEWORK"
       - name: Build installer
         run: ./build.sh --installer
-      - name: Zip portable copy
+      - name: Zip portable copy and update package
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force dist | Out-Null
           Copy-Item "distribution/windows/setup/output/Materia-Setup-$env:MATERIAVERSION.exe" dist/
           Compress-Archive -Path "_artifacts/win-x64/$env:FRAMEWORK/Prowlarr/*" -DestinationPath "dist/Materia-$env:MATERIAVERSION-windows-x64-portable.zip"
+          # The in-app updater downloads this one; it keeps the Prowlarr/ folder at the top.
+          $update = "dist/Materia-$env:MATERIAVERSION-windows-x64-update.zip"
+          Compress-Archive -Path "_artifacts/win-x64/$env:FRAMEWORK/Prowlarr" -DestinationPath $update
+          $hash = (Get-FileHash $update -Algorithm SHA256).Hash.ToLower()
+          Set-Content -NoNewline -Path "$update.sha256" -Value "$hash  Materia-$env:MATERIAVERSION-windows-x64-update.zip"
       - uses: actions/upload-artifact@v4
         with:
           name: materia-windows
@@ -108,6 +113,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v4
         with:
           path: dist
@@ -120,11 +127,23 @@ jobs:
         run: |
           v=$(tr -d ' \r\n' < VERSION)
           echo "version=$v" >> "$GITHUB_OUTPUT"
-          if gh release view "v$v" --repo "${{ github.repository }}" > /dev/null 2>&1; then
+          if gh api "repos/${{ github.repository }}/releases/tags/v$v" > /dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
+          # Changes since the last release, one "- " line per commit (Materia's updater shows these).
+          prev=$(git describe --tags --abbrev=0 2>/dev/null || true)
+          if [ -n "$prev" ]; then range="$prev..HEAD"; else range="HEAD"; fi
+          {
+            echo "## Changes"
+            git log --no-merges --pretty='- %s' $range | head -40
+            echo
+            echo "## Install"
+            echo "**Windows:** run \`Materia-Setup-$v.exe\` (no admin needed), or let Materia update itself. Materia opens in your browser at http://localhost:9696. Your data is kept in \`%APPDATA%\\Materia\`."
+            echo
+            echo "**Synology (DS923+ and other x86-64 models, DSM 7.2):** Package Center → Manual Install → choose \`Materia-$v-x86_64.spk\`. Then open Materia from the main menu or go to http://your-nas:9696."
+          } > notes.md
       # Bump VERSION to publish a new release; pushes without a bump only build.
       - name: Publish release
         if: steps.rel.outputs.exists == 'false'
@@ -135,6 +154,4 @@ jobs:
           name: Materia v${{ steps.rel.outputs.version }}
           files: dist/*
           make_latest: true
-          body: |
-            **Windows:** run `Materia-Setup-*.exe` (no admin needed). Materia opens in your browser at http://localhost:9696. Your data is kept in `%APPDATA%\Materia`.
-            **Synology (DS923+ and other x86-64 models, DSM 7.2):** Package Center → Manual Install → choose `Materia-*-x86_64.spk`. Then open Materia from the main menu or go to http://your-nas:9696.
+          body_path: notes.md

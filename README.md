@@ -16,8 +16,9 @@ definitions and the *arr syncing are Prowlarr's; Materia changes the look and ho
 - **Send to Lifestream** button on every torrent search result. It opens the magnet link (or the .torrent file)
   in Lifestream.
 - Data lives in `%APPDATA%\Materia` on Windows, not next to the program.
-- Never updates itself from Prowlarr's update server (that would replace Materia with Prowlarr). New versions
-  come from this repo's Releases.
+- Updates come from this repo's GitHub Releases, never from Prowlarr's update server (which would replace
+  Materia with Prowlarr). On Windows, Materia checks every 6 hours and installs new versions itself (turn this off
+  under Config → General → Updates). On Synology it shows "update available" with a link to the new `.spk`.
 - No crash reports or analytics are sent to the Prowlarr/Servarr servers.
 - Indexers still see Prowlarr's user agent, so trackers that recognize Prowlarr keep working.
 

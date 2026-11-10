@@ -45,10 +45,9 @@ namespace NzbDrone.Update.UpdateEngine
                     }
                 }
 
-                _logger.Info("Killing all running processes");
-
-                _processProvider.KillAll(ProcessProvider.PROWLARR_CONSOLE_PROCESS_NAME);
-                _processProvider.KillAll(ProcessProvider.PROWLARR_PROCESS_NAME);
+                // Only stop this Materia process, so a separate Prowlarr install keeps running.
+                _logger.Info("Stopping Materia");
+                _processProvider.Kill(processId);
             }
             else
             {
