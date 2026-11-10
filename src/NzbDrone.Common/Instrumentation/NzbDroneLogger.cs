@@ -45,8 +45,6 @@ namespace NzbDrone.Common.Instrumentation
                 RegisterDebugger();
             }
 
-            // Materia: no crash reports to the Servarr Sentry server.
-
             if (updateApp)
             {
                 RegisterUpdateFile(appFolderInfo);

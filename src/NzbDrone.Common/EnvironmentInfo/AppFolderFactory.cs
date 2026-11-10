@@ -46,9 +46,6 @@ namespace NzbDrone.Common.EnvironmentInfo
                 throw new ProwlarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
             }
 
-            // Materia's data folder is per user (%APPDATA%\Materia), so it keeps the
-            // user's own permissions instead of being opened up to everyone.
-
             if (!_diskProvider.FolderWritable(_appFolderInfo.AppDataFolder))
             {
                 throw new ProwlarrStartupException("AppFolder {0} is not writable", _appFolderInfo.AppDataFolder);
