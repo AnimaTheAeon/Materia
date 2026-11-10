@@ -112,20 +112,36 @@ function BigOrb() {
       <div className={classNames(styles.shell, styles.s3)} />
       <div className={styles.gloss} />
       <div className={styles.glyph}>
-        <svg width="40%" height="40%" viewBox="0 0 100 100">
-          <path
-            d="M50 10 C 74 26, 74 74, 50 90 C 26 74, 26 26, 50 10 Z"
-            fill="none"
-            stroke="rgba(255,255,230,0.85)"
-            strokeWidth="5"
+        {/* Two linked materia slots, like a weapon's paired slots. */}
+        <svg width="46%" height="46%" viewBox="0 0 100 100">
+          <rect
+            x="28"
+            y="45"
+            width="44"
+            height="10"
+            rx="3"
+            fill="rgba(255,255,230,0.7)"
           />
-          <circle cx="50" cy="50" r="11" fill="rgba(255,255,230,0.85)" />
-          <path
-            d="M14 50 Q 50 36 86 50 Q 50 64 14 50 Z"
+          <circle
+            cx="26"
+            cy="50"
+            r="18"
             fill="none"
-            stroke="rgba(255,255,230,0.55)"
-            strokeWidth="3"
+            stroke="rgba(255,255,230,0.9)"
+            strokeWidth="4"
           />
+          <circle
+            cx="74"
+            cy="50"
+            r="18"
+            fill="none"
+            stroke="rgba(255,255,230,0.9)"
+            strokeWidth="4"
+          />
+          <circle cx="26" cy="50" r="11" fill="rgba(255,255,230,0.9)" />
+          <circle cx="74" cy="50" r="11" fill="rgba(255,255,230,0.9)" />
+          <circle cx="22.5" cy="46" r="3.2" fill="rgba(80,150,30,0.7)" />
+          <circle cx="70.5" cy="46" r="3.2" fill="rgba(80,150,30,0.7)" />
         </svg>
       </div>
     </div>
