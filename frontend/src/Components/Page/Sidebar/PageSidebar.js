@@ -45,12 +45,8 @@ export const pageLinks = [
   {
     iconName: icons.SETTINGS,
     title: () => 'Config',
-    to: '/settings',
+    to: '/settings/applications',
     children: [
-      {
-        title: () => translate('Indexers'),
-        to: '/settings/indexers'
-      },
       {
         title: () => translate('Apps'),
         to: '/settings/applications'
@@ -60,7 +56,11 @@ export const pageLinks = [
         to: '/settings/downloadclients'
       },
       {
-        title: () => translate('Connect'),
+        title: () => 'Proxies',
+        to: '/settings/indexers'
+      },
+      {
+        title: () => 'Notifications',
         to: '/settings/connect'
       },
       {

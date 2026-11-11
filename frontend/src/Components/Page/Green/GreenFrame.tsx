@@ -19,6 +19,7 @@ import {
   pageLinks,
 } from 'Components/Page/Sidebar/PageSidebar';
 import { fetchHealth } from 'Store/Actions/systemActions';
+import useMateriaStatus from '../useMateriaStatus';
 import { sinkIntoGlow, zoomIntoOrb, zoomOutOfOrb } from './orbZoom';
 import styles from './GreenFrame.css';
 
@@ -149,33 +150,15 @@ function BigOrb() {
   );
 }
 
-function useStatus() {
-  const indexers = useSelector((state: AppState) => state.indexers.items);
-  const health = useSelector(
-    (state: AppState) => state.system.health?.items ?? []
-  );
-
-  const equipped = indexers.filter((indexer) => indexer.enable).length;
-  const problems = health.filter(
-    (item) => item.type === 'error' || item.type === 'warning'
-  );
-
-  return {
-    top: `${equipped} OF ${indexers.length} INDEXERS EQUIPPED`,
-    bottom: problems.length ? problems[0].message : 'All systems ready',
-    lit: !problems.some((item) => item.type === 'error'),
-  };
-}
-
 function StatusBox({ compact }: { compact?: boolean }) {
-  const { top, bottom, lit } = useStatus();
+  const { headline, detail, hasError } = useMateriaStatus();
 
   return (
     <div className={classNames(styles.statusBox, compact && styles.compact)}>
-      <span className={classNames(styles.mini, !lit && styles.miniOff)} />
+      <span className={classNames(styles.mini, hasError && styles.miniOff)} />
       <span className={styles.statusText}>
-        <span className={styles.statusTop}>{top}</span>
-        {compact ? null : <span className={styles.statusBottom}>{bottom}</span>}
+        <span className={styles.statusTop}>{headline}</span>
+        {compact ? null : <span className={styles.statusBottom}>{detail}</span>}
       </span>
     </div>
   );
@@ -360,7 +343,7 @@ function GreenFrame({ location, children }: GreenFrameProps) {
       return children;
     }
 
-    return [{ title: section.title, to: section.to }, ...children];
+    return [{ title: () => 'List', to: section.to }, ...children];
   }, [section]);
 
   const handleShortcutsOpen = useCallback(() => setIsShortcutsOpen(true), []);
@@ -411,7 +394,7 @@ function GreenFrame({ location, children }: GreenFrameProps) {
               <IndexerSearchInputConnector />
             </div>
             <StatusBox compact={true} />
-            {actions}
+            <div className={styles.actions}>{actions}</div>
           </div>
 
           {tabs.length ? (

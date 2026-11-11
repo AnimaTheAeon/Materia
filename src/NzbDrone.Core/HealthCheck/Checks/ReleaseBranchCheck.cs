@@ -35,6 +35,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public enum ReleaseBranches
         {
+            Main,
             Master,
             Develop,
             Nightly

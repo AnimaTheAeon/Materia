@@ -7,6 +7,7 @@ module.exports = {
   windowBorderMid: '#50a028',
   windowBorderDark: '#082206',
   statLabelColor: '#c8ff4a',
+  labelTextColor: '#1c3504',
   windowRadius: '0',
   windowClip: 'polygon(22px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px)',
   windowShadow: 'inset 0 0 0 1px rgba(160, 255, 80, 0.12)',
@@ -208,6 +209,6 @@ module.exports = {
 
   chartBackgroundColor: 'transparent',
   failedColors: ['#ffbeb2', '#feb4a6', '#fdab9b', '#fca290', '#fb9984', '#fa8f79', '#f9856e', '#f77b66', '#f5715d', '#f36754', '#f05c4d', '#ec5049', '#e74545', '#e13b42', '#da323f', '#d3293d', '#ca223c', '#c11a3b', '#b8163a', '#ae123a'].join(','),
-  chartColorsDiversified: ['#90caf9', '#f4d166', '#ff8a65', '#ce93d8', '#80cba9', '#ffab91', '#8097ea', '#bcaaa4', '#a57583', '#e4e498', '#9e96af', '#c6ab81', '#6972c6', '#619fc6', '#81ad81', '#f48fb1', '#82afca', '#b5b071', '#8b959b', '#7ec0b4'].join(','),
+  chartColorsDiversified: ['#e2ff6a', '#8cff6e', '#ffe14a', '#4fb51a', '#c8ff4a', '#a6dc80', '#ff7a5a', '#2c8a12', '#f0ffb0', '#7ac83c'].join(','),
   chartColors: ['#e2ff6a', '#c8ff4a', '#8cff6e', '#4fb51a', '#2c8a12', '#ffe14a', '#a6dc80', '#ff7a5a'].join(',')
 };

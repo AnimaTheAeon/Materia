@@ -300,14 +300,25 @@ function SearchIndexRow(props: SearchIndexRowProps) {
         if (name === 'actions') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              <SpinnerIconButton
-                name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
-                kind={getDownloadKind(isGrabbed, grabError)}
-                title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
-                isDisabled={isGrabbed}
-                isSpinning={isGrabbing}
-                onPress={onGrabPressWrapper}
-              />
+              {protocol === 'torrent' && (magnetUrl || downloadUrl) ? (
+                <IconButton
+                  className={styles.lifestreamLink}
+                  name={icons.LIFESTREAM}
+                  title="Send to Lifestream (opens Lifestream on this computer)"
+                  to={magnetUrl || downloadUrl}
+                />
+              ) : null}
+
+              {downloadClients.length ? (
+                <SpinnerIconButton
+                  name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
+                  kind={getDownloadKind(isGrabbed, grabError)}
+                  title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
+                  isDisabled={isGrabbed}
+                  isSpinning={isGrabbing}
+                  onPress={onGrabPressWrapper}
+                />
+              ) : null}
 
               {downloadClients.length > 1 ? (
                 <Link
@@ -335,26 +346,8 @@ function SearchIndexRow(props: SearchIndexRowProps) {
                 <IconButton
                   className={styles.downloadLink}
                   name={icons.SAVE}
-                  title={translate('Save')}
+                  title="Save file"
                   onPress={onSavePressWrapper}
-                />
-              ) : null}
-
-              {protocol === 'torrent' && (magnetUrl || downloadUrl) ? (
-                <IconButton
-                  className={styles.lifestreamLink}
-                  name={icons.LIFESTREAM}
-                  title="Send to Lifestream"
-                  to={magnetUrl || downloadUrl}
-                />
-              ) : null}
-
-              {magnetUrl ? (
-                <IconButton
-                  className={styles.downloadLink}
-                  name={icons.MAGNET}
-                  title={translate('Open')}
-                  to={magnetUrl}
                 />
               ) : null}
 

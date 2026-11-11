@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'addAppProfile': string;
+  'addLabel': string;
   'appProfiles': string;
   'center': string;
 }

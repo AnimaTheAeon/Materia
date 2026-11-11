@@ -51,7 +51,6 @@ namespace Prowlarr.Api.V1.Config
 
             SharedValidator.RuleFor(c => c.UrlBase).ValidUrlBase();
             SharedValidator.RuleFor(c => c.TrustedNetworks).ValidIpNetworks();
-            SharedValidator.RuleFor(c => c.InstanceName).ContainsProwlarr().When(c => c.InstanceName.IsNotNullOrWhiteSpace());
 
             SharedValidator.RuleFor(c => c.Username).NotEmpty().When(c => c.AuthenticationMethod == AuthenticationType.Forms);
             SharedValidator.RuleFor(c => c.Password).NotEmpty().When(c => c.AuthenticationMethod == AuthenticationType.Forms);

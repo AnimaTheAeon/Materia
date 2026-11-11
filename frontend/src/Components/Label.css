@@ -3,8 +3,9 @@
   margin: 2px;
   border: 1px solid;
   border-radius: 2px;
-  color: var(--white);
+  color: var(--labelTextColor);
   text-align: center;
+  text-shadow: none;
   white-space: nowrap;
   line-height: 1;
   cursor: default;
@@ -71,7 +72,6 @@
 .success {
   border-color: var(--successColor);
   background-color: var(--successColor);
-  color: #eee;
 
   &.outline {
     color: var(--successColor);

@@ -200,7 +200,7 @@ class SearchFooter extends Component {
     }
 
     return (
-      <PageContentFooter>
+      <PageContentFooter className={styles.searchBar}>
         <div className={styles.inputContainer}>
           <SearchFooterLabel
             label={translate('Query')}

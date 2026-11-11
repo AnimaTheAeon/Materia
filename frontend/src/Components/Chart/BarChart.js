@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { kinds } from 'Helpers/Props';
 import { defaultFontFamily } from 'Styles/Variables/fonts';
+import applyChartTheme from './applyChartTheme';
 
 function getColors(kind) {
 
@@ -22,6 +23,7 @@ class BarChart extends Component {
   }
 
   componentDidMount() {
+    applyChartTheme();
     this.myChart = new Chart(this.canvasRef.current, {
       type: 'bar',
       options: {

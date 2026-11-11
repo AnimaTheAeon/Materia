@@ -1,6 +1,7 @@
 import Chart from 'chart.js/auto';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import applyChartTheme from './applyChartTheme';
 
 class LineChart extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class LineChart extends Component {
   }
 
   componentDidMount() {
+    applyChartTheme();
     this.myChart = new Chart(this.canvasRef.current, {
       type: 'line',
       options: {

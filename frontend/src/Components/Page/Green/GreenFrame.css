@@ -310,25 +310,28 @@
   min-width: 0;
 }
 
-.statusTop,
-.statusBottom {
+.statusTop {
   overflow: hidden;
+  color: #a6dc80;
   text-transform: uppercase;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.statusTop {
-  color: #a6dc80;
   letter-spacing: 0.12em;
   font-size: 11px;
 }
 
+/* Up to two lines, so the important message isn't cut short. */
 .statusBottom {
+  display: box;
+  overflow: hidden;
   color: #f0ffd8;
+  text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 800;
   font-size: 14px;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .hint {
@@ -414,6 +417,10 @@
   justify-content: flex-end;
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.actions {
+  flex: 0 0 auto;
 }
 
 .tabs {
@@ -530,9 +537,41 @@
     padding: 10px 8px 8px;
   }
 
+  /* Phone: title and power button on one line, Find indexer under them. */
   .topRow {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'title actions'
+      'search search';
     gap: 8px;
+  }
+
+  .titleBar {
+    grid-area: title;
+    justify-self: start;
+  }
+
+  .actions {
+    grid-area: actions;
+  }
+
+  .search {
+    grid-area: search;
+
+    justify-content: stretch;
+  }
+
+  /* Section tabs stay on one line and scroll sideways. */
+  .tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .subTab {
+    flex: 0 0 auto;
   }
 
   .titleBar {

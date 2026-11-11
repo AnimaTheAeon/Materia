@@ -10,6 +10,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
 {
     public class SystemTimeCheck : HealthCheckBase
     {
+        // Materia: the time check asks Prowlarr's server, so it's switched off.
+        private const bool ProwlarrServicesDisabled = true;
+
         private readonly IHttpClient _client;
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
         private readonly Logger _logger;
@@ -24,7 +27,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            if (BuildInfo.IsDebug)
+            if (BuildInfo.IsDebug || ProwlarrServicesDisabled)
             {
                 return new HealthCheck(GetType());
             }

@@ -132,12 +132,13 @@ jobs:
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
-          # Changes since the last release, one "- " line per commit (Materia's updater shows these).
-          prev=$(git describe --tags --abbrev=0 2>/dev/null || true)
-          if [ -n "$prev" ]; then range="$prev..HEAD"; else range="HEAD"; fi
+          # Release notes come from this version's section of CHANGES.md
+          # ("## 1.2.0" followed by "- " lines). Materia's Updates page shows them.
+          awk -v v="$v" '$0 == "## " v {on=1; next} /^## / {on=0} on && /^- /' CHANGES.md > changes.txt
+          if [ ! -s changes.txt ]; then echo "- Maintenance update" > changes.txt; fi
           {
             echo "## Changes"
-            git log --no-merges --pretty='- %s' $range | head -40
+            cat changes.txt
             echo
             echo "## Install"
             echo "**Windows:** run \`Materia-Setup-$v.exe\` (no admin needed), or let Materia update itself. Materia opens in your browser at http://localhost:9696. Your data is kept in \`%APPDATA%\\Materia\`."

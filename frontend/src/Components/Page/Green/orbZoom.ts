@@ -1,11 +1,12 @@
-// Box of X: opening a page from home zooms into the big orb until it fills
-// the window and flares lime, then the page fades in out of the glow. BACK
-// plays it in reverse. Same timing as the Windows apps (Jenova, Lifestream,
-// Turks).
+// Box of X: opening a page from home gently grows and dims the big orb while
+// the screen fades through dark green, then the page fades in. BACK plays it
+// in reverse. Kept slow and dark on purpose: no bright flash.
 
-const ZOOM_MS = 500;
-const REVEAL_MS = 350;
-const EASE_IN = 'cubic-bezier(.32, 0, .67, 0)';
+const ZOOM_MS = 900;
+const REVEAL_MS = 700;
+const ORB_GROW = 1.6;
+const SHADE = '#041c04';
+const EASE_IN = 'cubic-bezier(.4, 0, .6, 1)';
 const EASE_OUT = 'cubic-bezier(.33, 1, .68, 1)';
 
 let busy = false;
@@ -24,7 +25,7 @@ function glowLayer(): HTMLElement {
     Object.assign(glow.style, {
       position: 'fixed',
       inset: '0',
-      background: '#aaec3c',
+      background: SHADE,
       opacity: '0',
       pointerEvents: 'none',
       zIndex: '9999',
@@ -33,24 +34,6 @@ function glowLayer(): HTMLElement {
   }
 
   return glow;
-}
-
-// How much the orb must grow to cover the window from its center.
-function coverScale(orb: HTMLElement) {
-  const box = orb.getBoundingClientRect();
-  const cx = box.left + box.width / 2;
-  const cy = box.top + box.height / 2;
-  const corners = [
-    [0, 0],
-    [window.innerWidth, 0],
-    [0, window.innerHeight],
-    [window.innerWidth, window.innerHeight],
-  ];
-  const reach = Math.max(
-    ...corners.map(([x, y]) => Math.hypot(x - cx, y - cy))
-  );
-
-  return (reach * 1.15) / (box.width / 2 || 1);
 }
 
 function stop(element: Element) {
@@ -77,23 +60,26 @@ export function zoomIntoOrb(open: () => void) {
 
   busy = true;
   const glow = glowLayer();
-  const scale = coverScale(orb);
 
-  orb.style.zIndex = '40';
-  orb.animate([{ scale: '1' }, { scale: String(scale) }], {
-    duration: ZOOM_MS,
-    easing: EASE_IN,
-    fill: 'forwards',
-  });
+  orb.animate(
+    [
+      { scale: '1', opacity: 1 },
+      { scale: String(ORB_GROW), opacity: 0.3 },
+    ],
+    {
+      duration: ZOOM_MS,
+      easing: EASE_IN,
+      fill: 'forwards',
+    }
+  );
   glow
-    .animate([{ opacity: 0 }, { opacity: 0, offset: 0.55 }, { opacity: 1 }], {
+    .animate([{ opacity: 0 }, { opacity: 0, offset: 0.3 }, { opacity: 1 }], {
       duration: ZOOM_MS,
       easing: 'ease-in',
       fill: 'forwards',
     })
     .finished.then(() => {
       stop(orb);
-      orb.style.zIndex = '';
       open();
       stop(glow);
 
@@ -136,7 +122,7 @@ export function sinkIntoGlow(goHome: () => void) {
     .finished.then(goHome, goHome);
 }
 
-/** After sinkIntoGlow's goHome: the orb shrinks back from full-window. */
+/** After sinkIntoGlow's goHome: the orb settles back to its normal size. */
 export function zoomOutOfOrb() {
   if (!pendingOut) {
     return;
@@ -147,22 +133,21 @@ export function zoomOutOfOrb() {
   const orb = findOrb();
 
   if (orb) {
-    const scale = coverScale(orb);
-
-    orb.style.zIndex = '40';
-    orb
-      .animate([{ scale: String(scale) }, { scale: '1' }], {
+    orb.animate(
+      [
+        { scale: String(ORB_GROW), opacity: 0.3 },
+        { scale: '1', opacity: 1 },
+      ],
+      {
         duration: ZOOM_MS,
         easing: EASE_OUT,
-      })
-      .finished.finally(() => {
-        orb.style.zIndex = '';
-      });
+      }
+    );
   }
 
   stop(glow);
   glow
-    .animate([{ opacity: 1 }, { opacity: 0, offset: 0.45 }, { opacity: 0 }], {
+    .animate([{ opacity: 1 }, { opacity: 0 }], {
       duration: ZOOM_MS,
       easing: 'ease-out',
       fill: 'forwards',

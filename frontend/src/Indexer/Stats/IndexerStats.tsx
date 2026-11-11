@@ -292,77 +292,86 @@ function IndexerStats() {
                 <div className={styles.stat}>{userAgentCount}</div>
               </div>
             </div>
-            <div className={styles.fullWidthChart}>
-              <div className={styles.chartContainer}>
-                <StackedBarChart
-                  data={getAverageResponseTimeData(item.indexers)}
-                  title={translate('AverageResponseTimesMs')}
-                  stepSize={100}
-                />
+            {queryCount === 0 ? (
+              <div className={styles.noStats}>
+                No stats yet. Charts appear here once your indexers have been
+                searched.
               </div>
-            </div>
-            <div className={styles.fullWidthChart}>
-              <div className={styles.chartContainer}>
-                <BarChart
-                  data={getFailureRateData(item.indexers)}
-                  title={translate('IndexerFailureRate')}
-                  stepSize={0.1}
-                  kind={kinds.WARNING}
-                />
-              </div>
-            </div>
-            <div className={styles.halfWidthChart}>
-              <div className={styles.chartContainer}>
-                <StackedBarChart
-                  data={getTotalRequestsData(item.indexers)}
-                  title={translate('TotalIndexerQueries')}
-                />
-              </div>
-            </div>
-            <div className={styles.halfWidthChart}>
-              <div className={styles.chartContainer}>
-                <BarChart
-                  data={getNumberGrabsData(item.indexers)}
-                  title={translate('TotalIndexerSuccessfulGrabs')}
-                />
-              </div>
-            </div>
-            <div className={styles.halfWidthChart}>
-              <div className={styles.chartContainer}>
-                <BarChart
-                  data={getUserAgentQueryData(item.userAgents)}
-                  title={translate('TotalUserAgentQueries')}
-                  horizontal={true}
-                />
-              </div>
-            </div>
-            <div className={styles.halfWidthChart}>
-              <div className={styles.chartContainer}>
-                <BarChart
-                  data={getUserAgentGrabsData(item.userAgents)}
-                  title={translate('TotalUserAgentGrabs')}
-                  horizontal={true}
-                />
-              </div>
-            </div>
-            <div className={styles.halfWidthChart}>
-              <div className={styles.chartContainer}>
-                <DoughnutChart
-                  data={getHostQueryData(item.hosts)}
-                  title={translate('TotalHostQueries')}
-                  horizontal={true}
-                />
-              </div>
-            </div>
-            <div className={styles.halfWidthChart}>
-              <div className={styles.chartContainer}>
-                <DoughnutChart
-                  data={getHostGrabsData(item.hosts)}
-                  title={translate('TotalHostGrabs')}
-                  horizontal={true}
-                />
-              </div>
-            </div>
+            ) : (
+              <>
+                <div className={styles.fullWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <StackedBarChart
+                      data={getAverageResponseTimeData(item.indexers)}
+                      title={translate('AverageResponseTimesMs')}
+                      stepSize={100}
+                    />
+                  </div>
+                </div>
+                <div className={styles.fullWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <BarChart
+                      data={getFailureRateData(item.indexers)}
+                      title={translate('IndexerFailureRate')}
+                      stepSize={0.1}
+                      kind={kinds.WARNING}
+                    />
+                  </div>
+                </div>
+                <div className={styles.halfWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <StackedBarChart
+                      data={getTotalRequestsData(item.indexers)}
+                      title={translate('TotalIndexerQueries')}
+                    />
+                  </div>
+                </div>
+                <div className={styles.halfWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <BarChart
+                      data={getNumberGrabsData(item.indexers)}
+                      title={translate('TotalIndexerSuccessfulGrabs')}
+                    />
+                  </div>
+                </div>
+                <div className={styles.halfWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <BarChart
+                      data={getUserAgentQueryData(item.userAgents)}
+                      title={translate('TotalUserAgentQueries')}
+                      horizontal={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.halfWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <BarChart
+                      data={getUserAgentGrabsData(item.userAgents)}
+                      title={translate('TotalUserAgentGrabs')}
+                      horizontal={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.halfWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <DoughnutChart
+                      data={getHostQueryData(item.hosts)}
+                      title={translate('TotalHostQueries')}
+                      horizontal={true}
+                    />
+                  </div>
+                </div>
+                <div className={styles.halfWidthChart}>
+                  <div className={styles.chartContainer}>
+                    <DoughnutChart
+                      data={getHostGrabsData(item.hosts)}
+                      title={translate('TotalHostGrabs')}
+                      horizontal={true}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
       </PageContentBody>

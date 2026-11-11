@@ -32,7 +32,7 @@ namespace NzbDrone.Host
         {
             if (IsAlreadyRunning())
             {
-                _logger.Warn("Another instance of Prowlarr is already running.");
+                _logger.Warn("Materia is already running.");
                 _browserService.LaunchWebUI();
                 throw new TerminateApplicationException("Another instance is already running");
             }
@@ -50,7 +50,7 @@ namespace NzbDrone.Host
         {
             if (IsAlreadyRunning())
             {
-                _logger.Debug("Another instance of Prowlarr is already running.");
+                _logger.Debug("Materia is already running.");
             }
         }
 

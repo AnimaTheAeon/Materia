@@ -15,6 +15,10 @@ namespace NzbDrone.Core.HealthCheck
 {
     public class ServerSideNotificationService : HealthCheckBase
     {
+        // Materia: Prowlarr's server sends notices about Prowlarr versions, which
+        // don't apply to Materia, so it's never asked.
+        private const bool ProwlarrServicesDisabled = true;
+
         private readonly IHttpClient _client;
         private readonly IProwlarrCloudRequestBuilder _cloudRequestBuilder;
         private readonly IConfigFileProvider _configFileProvider;
@@ -40,7 +44,7 @@ namespace NzbDrone.Core.HealthCheck
 
         private HealthCheck RetrieveServerChecks()
         {
-            if (BuildInfo.IsDebug)
+            if (BuildInfo.IsDebug || ProwlarrServicesDisabled)
             {
                 return new HealthCheck(GetType());
             }

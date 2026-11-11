@@ -10,50 +10,28 @@ function MoreInfo() {
   return (
     <FieldSet legend={translate('MoreInfo')}>
       <DescriptionList>
-        <DescriptionListItemTitle>
-          {translate('HomePage')}
-        </DescriptionListItemTitle>
+        <DescriptionListItemTitle>Materia</DescriptionListItemTitle>
         <DescriptionListItemDescription>
-          <Link to="https://prowlarr.com/">prowlarr.com</Link>
+          <Link to="https://github.com/AnimaTheAeon/Materia">
+            github.com/AnimaTheAeon/Materia
+          </Link>
         </DescriptionListItemDescription>
-
-        <DescriptionListItemTitle>{translate('Wiki')}</DescriptionListItemTitle>
+        <DescriptionListItemTitle>Problems</DescriptionListItemTitle>
+        <DescriptionListItemDescription>
+          <Link to="https://github.com/AnimaTheAeon/Materia/issues">
+            github.com/AnimaTheAeon/Materia/issues
+          </Link>
+        </DescriptionListItemDescription>
+        <DescriptionListItemTitle>Help pages</DescriptionListItemTitle>
         <DescriptionListItemDescription>
           <Link to="https://wiki.servarr.com/prowlarr">
             wiki.servarr.com/prowlarr
-          </Link>
+          </Link>{' '}
+          (Prowlarr&apos;s wiki; Materia works the same way)
         </DescriptionListItemDescription>
-
-        <DescriptionListItemTitle>
-          {translate('Reddit')}
-        </DescriptionListItemTitle>
+        <DescriptionListItemTitle>Based on</DescriptionListItemTitle>
         <DescriptionListItemDescription>
-          <Link to="https://reddit.com/r/prowlarr">r/prowlarr</Link>
-        </DescriptionListItemDescription>
-
-        <DescriptionListItemTitle>
-          {translate('Discord')}
-        </DescriptionListItemTitle>
-        <DescriptionListItemDescription>
-          <Link to="https://prowlarr.com/discord">prowlarr.com/discord</Link>
-        </DescriptionListItemDescription>
-
-        <DescriptionListItemTitle>
-          {translate('Source')}
-        </DescriptionListItemTitle>
-        <DescriptionListItemDescription>
-          <Link to="https://github.com/Prowlarr/Prowlarr/">
-            github.com/Prowlarr/Prowlarr
-          </Link>
-        </DescriptionListItemDescription>
-
-        <DescriptionListItemTitle>
-          {translate('FeatureRequests')}
-        </DescriptionListItemTitle>
-        <DescriptionListItemDescription>
-          <Link to="https://github.com/Prowlarr/Prowlarr/issues">
-            github.com/Prowlarr/Prowlarr/issues
-          </Link>
+          <Link to="https://github.com/Prowlarr/Prowlarr">Prowlarr</Link>
         </DescriptionListItemDescription>
       </DescriptionList>
     </FieldSet>

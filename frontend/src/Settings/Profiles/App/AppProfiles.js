@@ -79,8 +79,9 @@ class AppProfiles extends Component {
               <div className={styles.center}>
                 <Icon
                   name={icons.ADD}
-                  size={45}
+                  size={20}
                 />
+                <span className={styles.addLabel}>Add sync profile</span>
               </div>
             </Card>
           </div>
