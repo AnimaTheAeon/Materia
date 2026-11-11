@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'addApplication': string;
+  'addLabel': string;
   'applications': string;
   'center': string;
 }

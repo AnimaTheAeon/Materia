@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'addIndexerProxy': string;
+  'addLabel': string;
   'center': string;
   'indexerProxies': string;
 }

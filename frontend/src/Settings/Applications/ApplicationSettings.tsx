@@ -74,7 +74,7 @@ function ApplicationSettings() {
             />
 
             <PageToolbarButton
-              label={translate('ManageApplications')}
+              label="Manage Apps"
               iconName={icons.MANAGE}
               onPress={onManageApplicationsPress}
             />

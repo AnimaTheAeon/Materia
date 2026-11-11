@@ -61,7 +61,7 @@ class IndexerProxies extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend={translate('IndexerProxies')}>
+      <FieldSet legend="Proxies">
         <PageSectionContent
           errorMessage={translate('UnableToLoadIndexerProxies')}
           {...otherProps}
@@ -88,8 +88,9 @@ class IndexerProxies extends Component {
               <div className={styles.center}>
                 <Icon
                   name={icons.ADD}
-                  size={45}
+                  size={20}
                 />
+                <span className={styles.addLabel}>Add proxy</span>
               </div>
             </Card>
           </div>

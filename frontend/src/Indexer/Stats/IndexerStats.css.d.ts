@@ -4,6 +4,7 @@ interface CssExports {
   'chartContainer': string;
   'fullWidthChart': string;
   'halfWidthChart': string;
+  'noStats': string;
   'quarterWidthChart': string;
   'stat': string;
   'statContainer': string;

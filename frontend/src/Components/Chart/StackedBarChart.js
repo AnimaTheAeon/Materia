@@ -2,6 +2,7 @@ import Chart from 'chart.js/auto';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { defaultFontFamily } from 'Styles/Variables/fonts';
+import applyChartTheme from './applyChartTheme';
 
 function getColors(index) {
 
@@ -16,6 +17,7 @@ class StackedBarChart extends Component {
   }
 
   componentDidMount() {
+    applyChartTheme();
     this.myChart = new Chart(this.canvasRef.current, {
       type: 'bar',
       options: {

@@ -12,7 +12,6 @@ import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadCl
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
 import IndexerSettings from 'Settings/Indexers/IndexerSettings';
 import NotificationSettings from 'Settings/Notifications/NotificationSettings';
-import Settings from 'Settings/Settings';
 import TagSettings from 'Settings/Tags/TagSettings';
 import UISettingsConnector from 'Settings/UI/UISettingsConnector';
 import BackupsConnector from 'System/Backup/BackupsConnector';
@@ -25,6 +24,11 @@ import getPathWithUrlBase from 'Utilities/getPathWithUrlBase';
 
 function RedirectWithUrlBase() {
   return <Redirect to={getPathWithUrlBase('/')} />;
+}
+
+// Config opens on Apps; the old overview page just sends you there.
+function RedirectToApps() {
+  return <Redirect to={getPathWithUrlBase('/settings/applications')} />;
 }
 
 function AppRoutes() {
@@ -65,7 +69,7 @@ function AppRoutes() {
         Settings
       */}
 
-      <Route exact={true} path="/settings" component={Settings} />
+      <Route exact={true} path="/settings" render={RedirectToApps} />
 
       <Route path="/settings/indexers" component={IndexerSettings} />
 

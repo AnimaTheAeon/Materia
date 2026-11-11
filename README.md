@@ -18,14 +18,15 @@ definitions and the *arr syncing are Prowlarr's; Materia changes the look and ho
     Esc, the BACK hint or the mouse's back button return to it (Esc closes an open pop-up first).
 - Each indexer gets a lettered materia square. The colored stripe shows its type: green for public, purple for
   private, yellow for Usenet, red when disabled.
-- **Send to Lifestream** button on every torrent search result. It opens the magnet link (or the .torrent file)
-  in Lifestream.
+- **Send to Lifestream** button on every torrent search result. It opens the release in Lifestream on the computer
+  you're browsing from, and Materia records the grab in History and Stats.
 - Data lives in `%APPDATA%\Materia` on Windows, not next to the program.
 - Updates come from this repo's GitHub Releases, never from Prowlarr's update server (which would replace
   Materia with Prowlarr). On Windows, Materia checks every 6 hours and installs new versions itself (turn this off
   under Config → General → Updates). On Synology it shows "update available" with a link to the new `.spk`.
-- No crash reports or analytics are sent to the Prowlarr/Servarr servers.
-- Indexers still see Prowlarr's user agent, so trackers that recognize Prowlarr keep working.
+- Doesn't contact Prowlarr's servers for crash reports, analytics, news or time checks. It still downloads the
+  indexer definitions from Prowlarr's indexer list, which is what lets it talk to each site.
+- Indexers see the Prowlarr version Materia is built on (3.0.2), so trackers that recognize Prowlarr keep working.
 
 ## Install
 
@@ -38,7 +39,8 @@ Package Center → Manual Install. Open Materia from the DSM main menu or go to 
 ## Building
 
 GitHub Actions builds everything on each push to `main`: the web interface, the Windows installer and portable
-zip, and the Synology `.spk`. To publish a new release, bump the number in `VERSION` and push.
+zip, and the Synology `.spk`. To publish a new release, add a section for it to `CHANGES.md` (those lines become the
+release notes and show on Materia's Updates page), bump the number in `VERSION`, and push.
 
 Local web interface build: `yarn install && yarn build --env production` (output in `_output/UI`).
 

@@ -43,7 +43,7 @@ function PageTimeBox() {
         <span>{uptime}</span>
       </div>
       <div className={styles.row}>
-        <span className={styles.label}>Materia</span>
+        <span className={styles.label}>Equipped</span>
         <span>{equipped}</span>
       </div>
     </div>

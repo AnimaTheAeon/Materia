@@ -188,7 +188,7 @@ class IndexerSearchInput extends Component {
       className: styles.input,
       name: 'movieSearch',
       value,
-      placeholder: translate('Search'),
+      placeholder: 'Find indexer',
       autoComplete: 'off',
       spellCheck: false,
       onChange: this.onChange,

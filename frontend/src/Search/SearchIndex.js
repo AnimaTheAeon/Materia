@@ -320,6 +320,18 @@ class SearchIndex extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
+        <SearchFooterConnector
+          isFetching={isFetching}
+          isPopulated={isPopulated}
+          isGrabbing={isGrabbing}
+          grabError={grabError}
+          selectedCount={selectedIndexerIds.length}
+          itemCount={items.length}
+          hasIndexers={hasIndexers}
+          onSearchPress={this.onSearchPress}
+          onBulkGrabPress={this.onBulkGrabPress}
+        />
+
         <div className={styles.pageContentBodyWrapper}>
           <PageContentBody
             ref={this.scrollerRef}
@@ -398,17 +410,6 @@ class SearchIndex extends Component {
           }
         </div>
 
-        <SearchFooterConnector
-          isFetching={isFetching}
-          isPopulated={isPopulated}
-          isGrabbing={isGrabbing}
-          grabError={grabError}
-          selectedCount={selectedIndexerIds.length}
-          itemCount={items.length}
-          hasIndexers={hasIndexers}
-          onSearchPress={this.onSearchPress}
-          onBulkGrabPress={this.onBulkGrabPress}
-        />
       </PageContent>
     );
   }

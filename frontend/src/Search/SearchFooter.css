@@ -72,3 +72,11 @@
     text-align: center;
   }
 }
+
+/* The search bar sits at the top of the Search page, under the toolbar. */
+.searchBar {
+  composes: contentFooter from '~Components/Page/PageContentFooter.css';
+
+  border-top: none;
+  border-bottom: 1px solid var(--windowBorderMid);
+}

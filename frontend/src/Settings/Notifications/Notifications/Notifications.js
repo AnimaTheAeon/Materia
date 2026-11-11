@@ -60,7 +60,7 @@ class Notifications extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend={translate('Connections')}>
+      <FieldSet legend="Notifications">
         <PageSectionContent
           errorMessage={translate('UnableToLoadNotifications')}
           {...otherProps}
@@ -86,8 +86,9 @@ class Notifications extends Component {
               <div className={styles.center}>
                 <Icon
                   name={icons.ADD}
-                  size={45}
+                  size={20}
                 />
+                <span className={styles.addLabel}>Add notification</span>
               </div>
             </Card>
           </div>

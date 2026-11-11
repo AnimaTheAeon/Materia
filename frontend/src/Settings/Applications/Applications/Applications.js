@@ -86,8 +86,9 @@ class Applications extends Component {
               <div className={styles.center}>
                 <Icon
                   name={icons.ADD}
-                  size={45}
+                  size={20}
                 />
+                <span className={styles.addLabel}>Add app</span>
               </div>
             </Card>
           </div>

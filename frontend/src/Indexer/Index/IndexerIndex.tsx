@@ -11,7 +11,6 @@ import ClientSideCollectionAppState from 'App/State/ClientSideCollectionAppState
 import IndexerAppState, {
   IndexerIndexAppState,
 } from 'App/State/IndexerAppState';
-import { APP_INDEXER_SYNC } from 'Commands/commandNames';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
@@ -20,14 +19,12 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
-import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import withScrollPosition from 'Components/withScrollPosition';
 import { align, icons } from 'Helpers/Props';
 import SortDirection from 'Helpers/Props/SortDirection';
 import AddIndexerModal from 'Indexer/Add/AddIndexerModal';
 import EditIndexerModalConnector from 'Indexer/Edit/EditIndexerModalConnector';
 import NoIndexer from 'Indexer/NoIndexer';
-import { executeCommand } from 'Store/Actions/commandActions';
 import {
   cloneIndexer,
   fetchIndexers,
@@ -36,11 +33,9 @@ import {
 import {
   setIndexerFilter,
   setIndexerSort,
-  setIndexerTableOption,
 } from 'Store/Actions/indexerIndexActions';
 import { fetchIndexerStatus } from 'Store/Actions/indexerStatusActions';
 import scrollPositions from 'Store/scrollPositions';
-import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createIndexerClientSideCollectionItemsSelector from 'Store/Selectors/createIndexerClientSideCollectionItemsSelector';
 import translate from 'Utilities/String/translate';
@@ -53,7 +48,6 @@ import IndexerIndexSelectFooter from './Select/IndexerIndexSelectFooter';
 import IndexerIndexSelectModeButton from './Select/IndexerIndexSelectModeButton';
 import IndexerIndexSelectModeMenuItem from './Select/IndexerIndexSelectModeMenuItem';
 import IndexerIndexTable from './Table/IndexerIndexTable';
-import IndexerIndexTableOptions from './Table/IndexerIndexTableOptions';
 import styles from './IndexerIndex.css';
 
 const getViewComponent = () => IndexerIndexTable;
@@ -70,7 +64,6 @@ const IndexerIndex = withScrollPosition((props: IndexerIndexProps) => {
     error,
     totalItems,
     items,
-    columns,
     selectedFilterKey,
     filters,
     customFilters,
@@ -80,9 +73,6 @@ const IndexerIndex = withScrollPosition((props: IndexerIndexProps) => {
   }: IndexerAppState & IndexerIndexAppState & ClientSideCollectionAppState =
     useSelector(createIndexerClientSideCollectionItemsSelector('indexerIndex'));
 
-  const isSyncingIndexers = useSelector(
-    createCommandExecutingSelector(APP_INDEXER_SYNC)
-  );
   const { isSmallScreen } = useSelector(createDimensionsSelector());
   const dispatch = useDispatch();
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -123,15 +113,6 @@ const IndexerIndex = withScrollPosition((props: IndexerIndexProps) => {
     [dispatch, setIsEditIndexerModalOpen]
   );
 
-  const onAppIndexerSyncPress = useCallback(() => {
-    dispatch(
-      executeCommand({
-        name: APP_INDEXER_SYNC,
-        forceSync: true,
-      })
-    );
-  }, [dispatch]);
-
   const onTestAllPress = useCallback(() => {
     dispatch(testAllIndexers());
   }, [dispatch]);
@@ -139,13 +120,6 @@ const IndexerIndex = withScrollPosition((props: IndexerIndexProps) => {
   const onSelectModePress = useCallback(() => {
     setIsSelectMode(!isSelectMode);
   }, [isSelectMode, setIsSelectMode]);
-
-  const onTableOptionChange = useCallback(
-    (payload: unknown) => {
-      dispatch(setIndexerTableOption(payload));
-    },
-    [dispatch]
-  );
 
   const onSortSelect = useCallback(
     (value: string) => {
@@ -232,15 +206,6 @@ const IndexerIndex = withScrollPosition((props: IndexerIndexProps) => {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label={translate('SyncAppIndexers')}
-              iconName={icons.REFRESH}
-              spinningName={icons.REFRESH}
-              isSpinning={isSyncingIndexers}
-              isDisabled={hasNoIndexer}
-              onPress={onAppIndexerSyncPress}
-            />
-
-            <PageToolbarButton
               label={translate('TestAllIndexers')}
               iconName={icons.TEST}
               isSpinning={isTestingAll}
@@ -273,19 +238,6 @@ const IndexerIndex = withScrollPosition((props: IndexerIndexProps) => {
             alignContent={align.RIGHT}
             collapseButtons={false}
           >
-            <TableOptionsModalWrapper
-              columns={columns}
-              optionsComponent={IndexerIndexTableOptions}
-              onTableOptionChange={onTableOptionChange}
-            >
-              <PageToolbarButton
-                label={translate('Options')}
-                iconName={icons.TABLE}
-              />
-            </TableOptionsModalWrapper>
-
-            <PageToolbarSeparator />
-
             <IndexerIndexSortMenu
               sortKey={sortKey}
               sortDirection={sortDirection}

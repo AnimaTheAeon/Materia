@@ -7,6 +7,7 @@ module.exports = {
   windowBorderMid: '#8c90a8',
   windowBorderDark: '#2c2e46',
   statLabelColor: '#70ccff',
+  labelTextColor: '#0a0f3a',
   windowRadius: '7px',
   windowClip: 'none',
   windowShadow: 'inset 0 0 0 1px #2c2e46, 3px 4px 0 rgba(0, 0, 0, 0.55)',
@@ -208,6 +209,6 @@ module.exports = {
 
   chartBackgroundColor: 'transparent',
   failedColors: ['#ffbeb2', '#feb4a6', '#fdab9b', '#fca290', '#fb9984', '#fa8f79', '#f9856e', '#f77b66', '#f5715d', '#f36754', '#f05c4d', '#ec5049', '#e74545', '#e13b42', '#da323f', '#d3293d', '#ca223c', '#c11a3b', '#b8163a', '#ae123a'].join(','),
-  chartColorsDiversified: ['#90caf9', '#f4d166', '#ff8a65', '#ce93d8', '#80cba9', '#ffab91', '#8097ea', '#bcaaa4', '#a57583', '#e4e498', '#9e96af', '#c6ab81', '#6972c6', '#619fc6', '#81ad81', '#f48fb1', '#82afca', '#b5b071', '#8b959b', '#7ec0b4'].join(','),
+  chartColorsDiversified: ['#70ccff', '#ffe260', '#78e68c', '#c99bff', '#ff9f6e', '#9fe4ff', '#d6d8e4', '#3d8bff', '#b8f0c4', '#ffd0a0'].join(','),
   chartColors: ['#9fe4ff', '#70ccff', '#3d8bff', '#2c5ec8', '#78e68c', '#ffe260', '#c99bff', '#ff6e6e'].join(',')
 };

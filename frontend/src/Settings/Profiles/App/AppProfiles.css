@@ -13,9 +13,17 @@
 }
 
 .center {
-  display: inline-block;
-  padding: 5px 20px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 18px;
   border: 1px solid var(--borderColor);
   border-radius: 4px;
   background-color: var(--cardCenterBackgroundColor);
+}
+
+.addLabel {
+  font-weight: 700;
+  font-size: 15px;
 }

@@ -62,12 +62,7 @@ class DownloadClients extends Component {
     return (
       <div>
         <Alert kind={kinds.INFO}>
-          <div>
-            {translate('ProwlarrDownloadClientsAlert')}
-          </div>
-          <div>
-            {translate('ProwlarrDownloadClientsInAppOnlyAlert')}
-          </div>
+          {translate('ProwlarrDownloadClientsAlert')}
         </Alert>
 
         <FieldSet legend={translate('DownloadClients')}>
@@ -95,8 +90,9 @@ class DownloadClients extends Component {
                 <div className={styles.center}>
                   <Icon
                     name={icons.ADD}
-                    size={45}
+                    size={20}
                   />
+                  <span className={styles.addLabel}>Add download client</span>
                 </div>
               </Card>
             </div>

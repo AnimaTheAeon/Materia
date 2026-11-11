@@ -1,3 +1,4 @@
+using System;
 using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Common.Http
@@ -9,6 +10,10 @@ namespace NzbDrone.Common.Http
 
     public class UserAgentBuilder : IUserAgentBuilder
     {
+        // Indexers see the Prowlarr version Materia is built on (Materia's own
+        // version number would look like a years-old Prowlarr to them).
+        private static readonly Version ProwlarrVersion = new Version(3, 0, 2);
+
         private readonly string _userAgentSimplified;
         private readonly string _userAgent;
 
@@ -33,8 +38,8 @@ namespace NzbDrone.Common.Http
 
             var osVersion = osInfo.Version?.ToLower();
 
-            _userAgent = $"Prowlarr/{BuildInfo.Version} ({osName} {osVersion})";
-            _userAgentSimplified = $"Prowlarr/{BuildInfo.Version.ToString(2)}";
+            _userAgent = $"Prowlarr/{ProwlarrVersion} ({osName} {osVersion})";
+            _userAgentSimplified = $"Prowlarr/{ProwlarrVersion.ToString(2)}";
         }
     }
 }

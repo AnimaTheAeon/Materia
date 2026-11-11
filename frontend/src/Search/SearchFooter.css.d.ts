@@ -7,6 +7,7 @@ interface CssExports {
   'grabReleasesButton': string;
   'indexerContainer': string;
   'inputContainer': string;
+  'searchBar': string;
   'searchButton': string;
   'selectedReleasesLabel': string;
 }
