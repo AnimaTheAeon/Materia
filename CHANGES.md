@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.2.1
+
+- Synology: fixed "Failed to install the package" in Package Center
+
 ## 1.2.0
 
 - Fixed: first-time setup couldn't save your username and password
