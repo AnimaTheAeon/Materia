@@ -10,8 +10,14 @@ is_running() {
 case "$1" in
 	start)
 		is_running && exit 0
-		# DSM has no ICU library; .NET runs fine without it.
-		export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+		# .NET uses ICU for dates and languages when DSM has it. Without ICU it runs
+		# in invariant mode, which must still accept "en-US": search results are
+		# dated with it, and without this every search (and the Sonarr/Midgar app
+		# test) fails.
+		if ! ls /usr/lib/libicuuc.so* /lib/libicuuc.so* /usr/lib64/libicuuc.so* >/dev/null 2>&1; then
+			export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+			export DOTNET_SYSTEM_GLOBALIZATION_PREDEFINED_CULTURES_ONLY=false
+		fi
 		export HOME="$SYNOPKG_PKGVAR"
 		nohup "$BIN" -nobrowser -data="$SYNOPKG_PKGVAR" >> "$SYNOPKG_PKGVAR/service.out" 2>&1 < /dev/null &
 		echo $! > "$PID_FILE"
