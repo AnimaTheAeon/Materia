@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.4.1
+
+- Synology: fixed searches failing, which also made adding Midgar, Turks, Sonarr or Radarr fail with "Prowlarr URL is invalid"
+
 ## 1.4.0
 
 - Midgar is now in the Add Application list (Settings > Apps), with Midgar's port 8990 already filled in. It works the same as the Sonarr entry.
