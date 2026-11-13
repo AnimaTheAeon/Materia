@@ -28,7 +28,8 @@ import styles from './SearchIndexRow.css';
 function getDownloadIcon(
   isGrabbing: boolean,
   isGrabbed: boolean,
-  grabError?: string
+  grabError?: string,
+  toLifestream = false
 ) {
   if (isGrabbing) {
     return icons.SPINNER;
@@ -38,7 +39,7 @@ function getDownloadIcon(
     return icons.DOWNLOADING;
   }
 
-  return icons.DOWNLOAD;
+  return toLifestream ? icons.LIFESTREAM : icons.DOWNLOAD;
 }
 
 function getDownloadKind(isGrabbed: boolean, grabError?: string) {
@@ -56,17 +57,20 @@ function getDownloadKind(isGrabbed: boolean, grabError?: string) {
 function getDownloadTooltip(
   isGrabbing: boolean,
   isGrabbed: boolean,
-  grabError?: string
+  grabError?: string,
+  toLifestream = false
 ) {
   if (isGrabbing) {
     return '';
   } else if (isGrabbed) {
-    return translate('AddedToDownloadClient');
+    return toLifestream
+      ? 'Sent to Lifestream'
+      : translate('AddedToDownloadClient');
   } else if (grabError) {
     return grabError;
   }
 
-  return translate('AddToDownloadClient');
+  return toLifestream ? 'Send to Lifestream' : translate('AddToDownloadClient');
 }
 
 interface SearchIndexRowProps {
@@ -149,6 +153,12 @@ function SearchIndexRow(props: SearchIndexRowProps) {
   const { items: downloadClients } = useSelector(
     createEnabledDownloadClientsSelector(protocol)
   );
+
+  // With Lifestream set up as a download client, the Grab button sends straight
+  // to it, so the browser-link Lifestream button isn't needed.
+  const toLifestream =
+    protocol === 'torrent' &&
+    downloadClients.some((client) => client.implementation === 'Lifestream');
 
   const onGrabPressWrapper = useCallback(() => {
     onGrabPress({
@@ -300,7 +310,9 @@ function SearchIndexRow(props: SearchIndexRowProps) {
         if (name === 'actions') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              {protocol === 'torrent' && (magnetUrl || downloadUrl) ? (
+              {protocol === 'torrent' &&
+              !toLifestream &&
+              (magnetUrl || downloadUrl) ? (
                 <IconButton
                   className={styles.lifestreamLink}
                   name={icons.LIFESTREAM}
@@ -311,9 +323,24 @@ function SearchIndexRow(props: SearchIndexRowProps) {
 
               {downloadClients.length ? (
                 <SpinnerIconButton
-                  name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
+                  className={
+                    toLifestream && !isGrabbed && !grabError
+                      ? styles.lifestreamLink
+                      : undefined
+                  }
+                  name={getDownloadIcon(
+                    isGrabbing,
+                    isGrabbed,
+                    grabError,
+                    toLifestream
+                  )}
                   kind={getDownloadKind(isGrabbed, grabError)}
-                  title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
+                  title={getDownloadTooltip(
+                    isGrabbing,
+                    isGrabbed,
+                    grabError,
+                    toLifestream
+                  )}
                   isDisabled={isGrabbed}
                   isSpinning={isGrabbing}
                   onPress={onGrabPressWrapper}

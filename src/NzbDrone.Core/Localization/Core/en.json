@@ -587,7 +587,7 @@
   "Privacy": "Privacy",
   "Private": "Private",
   "Protocol": "Protocol",
-  "ProwlarrDownloadClientsAlert": "Optional. Only needed if you want the Grab button on the Search page to send results to a download client. Send to Lifestream works without one, and Sonarr and Radarr use their own download clients.",
+  "ProwlarrDownloadClientsAlert": "Optional. Add Lifestream here (port 9091) to send search results straight to it from any device. In Lifestream, turn on Settings → Remote control and set a username and password first. Sonarr and Radarr use their own download clients.",
   "ProwlarrDownloadClientsInAppOnlyAlert": "Download clients are for {appName} in-app searches only and do not sync to apps. There are no plans to add any such functionality.",
   "ProwlarrSupportsAnyDownloadClient": "{appName} supports any of the download clients listed below.",
   "ProwlarrSupportsAnyIndexer": "{appName} supports many indexers in addition to any indexer that uses the Newznab/Torznab standard using 'Generic Newznab' (for usenet) or 'Generic Torznab' (for torrents). Search & Select your indexer from below.",
