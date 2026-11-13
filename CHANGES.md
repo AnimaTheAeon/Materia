@@ -3,6 +3,11 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.3.0
+
+- Lifestream is now in the Add Download Client list (it uses Lifestream's remote control on port 9091)
+- With Lifestream added, each search result has one Send to Lifestream button that sends the release straight to Lifestream, from any device
+
 ## 1.2.1
 
 - Synology: fixed "Failed to install the package" in Package Center

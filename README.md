@@ -18,8 +18,9 @@ definitions and the *arr syncing are Prowlarr's; Materia changes the look and ho
     Esc, the BACK hint or the mouse's back button return to it (Esc closes an open pop-up first).
 - Each indexer gets a lettered materia square. The colored stripe shows its type: green for public, purple for
   private, yellow for Usenet, red when disabled.
-- **Send to Lifestream** button on every torrent search result. It opens the release in Lifestream on the computer
-  you're browsing from, and Materia records the grab in History and Stats.
+- **Lifestream** is in the Add Download Client list (Config → Download Clients; port 9091, with Remote control turned on
+  in Lifestream). Once it's added, the **Send to Lifestream** button on each torrent result sends the release straight
+  to Lifestream from any device. Without it, the button opens the release in Lifestream on the computer you're using.
 - Data lives in `%APPDATA%\Materia` on Windows, not next to the program.
 - Updates come from this repo's GitHub Releases, never from Prowlarr's update server (which would replace
   Materia with Prowlarr). On Windows, Materia checks every 6 hours and installs new versions itself (turn this off
