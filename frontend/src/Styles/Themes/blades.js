@@ -4,6 +4,19 @@
 const prowlarrOrange = '#ffffff';
 
 module.exports = {
+  // Labels, chips and legend swatches: tinted glass that white text reads on,
+  // on any blade color (the plain status colors above are pale so text reads).
+  bladesSuccess: 'rgba(38, 128, 52, 0.92)',
+  bladesInfo: 'rgba(28, 82, 146, 0.92)',
+  bladesPrimary: 'rgba(28, 82, 146, 0.92)',
+  bladesDanger: 'rgba(150, 32, 28, 0.94)',
+  bladesWarning: 'rgba(158, 108, 0, 0.94)',
+  bladesPurple: 'rgba(98, 66, 160, 0.92)',
+  bladesDefault: 'rgba(0, 0, 0, 0.32)',
+  bladesDisabled: 'rgba(0, 0, 0, 0.22)',
+  bladesLabelBorder: 'rgba(255, 255, 255, 0.55)',
+  bladesOutlineText: '#ffffff',
+
   // Blades: glass window colors
   windowGradient: 'linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04))',
   windowBorderLight: 'rgba(255, 255, 255, 0.35)',

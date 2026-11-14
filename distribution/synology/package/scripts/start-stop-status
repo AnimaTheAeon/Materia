@@ -1,7 +1,8 @@
 #!/bin/sh
 # DSM service control for Materia.
 PID_FILE="$SYNOPKG_PKGVAR/materia.pid"
-BIN="$SYNOPKG_PKGDEST/bin/Prowlarr"
+RUN="$SYNOPKG_PKGDEST/materia-run.sh"
+APP_PID_FILE="$SYNOPKG_PKGVAR/materia-app.pid"
 
 is_running() {
 	[ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null
@@ -19,7 +20,8 @@ case "$1" in
 			export DOTNET_SYSTEM_GLOBALIZATION_PREDEFINED_CULTURES_ONLY=false
 		fi
 		export HOME="$SYNOPKG_PKGVAR"
-		nohup "$BIN" -nobrowser -data="$SYNOPKG_PKGVAR" >> "$SYNOPKG_PKGVAR/service.out" 2>&1 < /dev/null &
+		# materia-run.sh runs Materia and swaps in its self-updates.
+		nohup /bin/sh "$RUN" "$SYNOPKG_PKGVAR" "$SYNOPKG_PKGDEST" >> "$SYNOPKG_PKGVAR/service.out" 2>&1 < /dev/null &
 		echo $! > "$PID_FILE"
 		i=0
 		while [ $i -lt 20 ]; do
@@ -40,7 +42,11 @@ case "$1" in
 			done
 			kill -KILL "$PID" 2>/dev/null
 		fi
-		rm -f "$PID_FILE"
+		# Materia itself, if the run script was killed before it could stop it.
+		if [ -f "$APP_PID_FILE" ]; then
+			kill -KILL "$(cat "$APP_PID_FILE")" 2>/dev/null
+		fi
+		rm -f "$PID_FILE" "$APP_PID_FILE"
 		exit 0
 		;;
 	status)

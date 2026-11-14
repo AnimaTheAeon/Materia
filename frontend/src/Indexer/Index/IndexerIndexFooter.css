@@ -21,25 +21,25 @@
 .disabled {
   composes: legendItemColor;
 
-  background-color: var(--darkGray);
+  background-color: var(--bladesDisabled, var(--darkGray));
 }
 
 .enabled {
   composes: legendItemColor;
 
-  background-color: var(--successColor);
+  background-color: var(--bladesSuccess, var(--successColor));
 }
 
 .redirected {
   composes: legendItemColor;
 
-  background-color: var(--infoColor);
+  background-color: var(--bladesInfo, var(--infoColor));
 }
 
 .error {
   composes: legendItemColor;
 
-  background-color: var(--dangerColor);
+  background-color: var(--bladesDanger, var(--dangerColor));
 
   &:global(.colorImpaired) {
     background: repeating-linear-gradient(90deg, color(var(--dangerColor) shade(5%)), color(var(--dangerColor) shade(5%)) 5px, color(var(--dangerColor) shade(15%)) 5px, color(var(--dangerColor) shade(15%)) 10px);

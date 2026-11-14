@@ -1,15 +1,15 @@
 .torrent {
   composes: label from '~Components/Label.css';
 
-  border-color: var(--torrentColor);
-  background-color: var(--torrentColor);
+  border-color: var(--bladesLabelBorder, var(--torrentColor));
+  background-color: var(--bladesInfo, var(--torrentColor));
 }
 
 .usenet {
   composes: label from '~Components/Label.css';
 
-  border-color: var(--usenetColor);
-  background-color: var(--usenetColor);
+  border-color: var(--bladesLabelBorder, var(--usenetColor));
+  background-color: var(--bladesWarning, var(--usenetColor));
 }
 
 .unknown {

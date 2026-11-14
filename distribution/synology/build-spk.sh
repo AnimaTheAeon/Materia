@@ -17,9 +17,12 @@ cp -R "$APP/." "$WORK/pkg/bin/"
 rm -rf "$WORK/pkg/bin/Prowlarr.Update"
 chmod 755 "$WORK/pkg/bin/Prowlarr"
 cp -R "$HERE/ui/." "$WORK/pkg/ui/"
-# Updates come from new .spk files, not the built-in updater.
-printf 'PackageVersion=%s\nPackageAuthor=AnimaTheAeon\nUpdateMethod=External\nUpdateMethodMessage=Install the newest Materia .spk from github.com/AnimaTheAeon/Materia/releases in Package Center\nBranch=main\n' "$VERSION-$BUILD" > "$WORK/pkg/package_info"
-(cd "$WORK/pkg" && tar --owner=0 --group=0 -czf "$WORK/package.tgz" bin ui package_info)
+# Materia updates itself: it downloads the next .spk and materia-run.sh swaps
+# the new version in (the old Prowlarr updater isn't used, so it's left out).
+printf 'PackageVersion=%s\nPackageAuthor=AnimaTheAeon\nUpdateMethod=BuiltIn\nBranch=main\n' "$VERSION-$BUILD" > "$WORK/pkg/package_info"
+cp "$HERE/materia-run.sh" "$WORK/pkg/materia-run.sh"
+chmod 755 "$WORK/pkg/materia-run.sh"
+(cd "$WORK/pkg" && tar --owner=0 --group=0 -czf "$WORK/package.tgz" bin ui package_info materia-run.sh)
 
 # spk layout
 mkdir -p "$WORK/spk"

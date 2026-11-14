@@ -3,6 +3,12 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.2
+
+- Synology: Materia now updates itself, like the Windows version. It checks GitHub, downloads the new .spk, checks it, and restarts into it. If a new version won't start, it goes back to the one Package Center installed. You need to install this one .spk by hand; after that it's automatic (Config > General > Updates). Package Center keeps showing the version you installed by hand; the real version is under System > Status.
+- Blades: labels, protocol tags, category chips and the colour key are readable (they were white on white), rows follow the blade's curve, and the page no longer sits in a box with a straight edge.
+- The Donations box is gone from System > Status.
+
 ## 1.5.1
 
 - The themes are now called FFVII Menu, Xbox and Blades. Your choice is kept.

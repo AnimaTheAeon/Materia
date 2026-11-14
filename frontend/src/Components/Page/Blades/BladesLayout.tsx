@@ -14,6 +14,7 @@ import {
 } from 'Components/Page/Sidebar/PageSidebar';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import useMateriaStatus from '../useMateriaStatus';
+import bladesContour from './bladesContour';
 import styles from './Blades.css';
 
 // Materia: the "Blades" layout (same look as Lifestream, Jenova, Turks and
@@ -185,6 +186,24 @@ function BladesLayout({ location, children }: BladesLayoutProps) {
   const [instant, setInstant] = useState(true);
   const width = useWidth();
   const drag = useRef<{ x: number; y: number; ok: boolean } | null>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  // Rows follow the open blade's curved left edge.
+  useEffect(() => {
+    const stage = stageRef.current;
+
+    if (!stage) {
+      return undefined;
+    }
+
+    const contour = bladesContour(
+      stage,
+      `.${styles.open} .${styles.bodyInner}`,
+      `.${styles.panel}`
+    );
+
+    return () => contour.stop();
+  }, []);
 
   const go = useCallback(
     (to: string) => history.push(`${window.Prowlarr.urlBase}${to}`),
@@ -332,6 +351,7 @@ function BladesLayout({ location, children }: BladesLayoutProps) {
 
   return (
     <div
+      ref={stageRef}
       className={styles.stage}
       style={stageStyle}
       onPointerDown={onPointerDown}

@@ -8,3 +8,19 @@
   overflow-x: hidden;
   width: 100%;
 }
+
+/* Blades: the page sits straight on the blade (no box with a straight edge
+   against the blade's curve); its rows follow the curve instead. */
+:global(html[data-theme=blades]) .content {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
+
+  filter: none;
+}
+
+:global(html[data-theme=blades]) .content::before,
+:global(html[data-theme=blades]) .content::after {
+  display: none;
+}

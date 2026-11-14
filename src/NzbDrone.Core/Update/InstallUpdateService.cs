@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Formats.Tar;
 using System.IO;
+using System.IO.Compression;
 using System.Threading;
 using NLog;
 using NzbDrone.Common;
@@ -14,6 +16,7 @@ using NzbDrone.Common.Processes;
 using NzbDrone.Core.Backup;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Lifecycle.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Update.Commands;
@@ -82,6 +85,16 @@ namespace NzbDrone.Core.Update
         private bool InstallUpdate(UpdatePackage updatePackage)
         {
             EnsureAppDataSafety();
+
+            // Synology: the package's run script supervises Materia and points this
+            // at its update folder. The new version is unpacked there and the script
+            // swaps it in when Materia stops (see distribution/synology/materia-run.sh).
+            var spkUpdateDir = Environment.GetEnvironmentVariable("MATERIA_SPK_UPDATE_DIR");
+
+            if (spkUpdateDir.IsNotNullOrWhiteSpace())
+            {
+                return InstallSpkUpdate(updatePackage, spkUpdateDir);
+            }
 
             if (_configFileProvider.UpdateMechanism != UpdateMechanism.Script)
             {
@@ -170,6 +183,75 @@ namespace NzbDrone.Core.Update
             _logger.ProgressInfo("Prowlarr will restart shortly.");
 
             _processProvider.Start(updateClientExePath, GetUpdaterArgs(updateSandboxFolder));
+
+            return true;
+        }
+
+        private bool InstallSpkUpdate(UpdatePackage updatePackage, string updateDir)
+        {
+            var work = Path.Combine(_appFolderInfo.TempFolder, "materia_update");
+            var spkPath = Path.Combine(work, updatePackage.FileName);
+            var unpacked = Path.Combine(work, "spk");
+            var staged = Path.Combine(updateDir, "next.tmp");
+            var next = Path.Combine(updateDir, "next");
+
+            if (_diskProvider.FolderExists(work))
+            {
+                _diskProvider.DeleteFolder(work, true);
+            }
+
+            _diskProvider.CreateFolder(unpacked);
+
+            _logger.ProgressInfo("Downloading update {0}", updatePackage.Version);
+            _httpClient.DownloadFile(updatePackage.Url, spkPath);
+
+            _logger.ProgressInfo("Verifying update package");
+
+            if (!_updateVerifier.Verify(updatePackage, spkPath))
+            {
+                _logger.Error("Update package is invalid");
+                throw new UpdateVerificationFailedException("Update file '{0}' is invalid", spkPath);
+            }
+
+            _logger.ProgressInfo("Extracting Update package");
+
+            // An .spk is a plain tar holding package.tgz, which holds bin/, ui/ and package_info.
+            TarFile.ExtractToDirectory(spkPath, unpacked, true);
+
+            if (_diskProvider.FolderExists(staged))
+            {
+                _diskProvider.DeleteFolder(staged, true);
+            }
+
+            _diskProvider.CreateFolder(staged);
+
+            using (var tgz = File.OpenRead(Path.Combine(unpacked, "package.tgz")))
+            using (var gz = new GZipStream(tgz, CompressionMode.Decompress))
+            {
+                TarFile.ExtractToDirectory(gz, staged, true);
+            }
+
+            var exe = Path.Combine(staged, "bin", "Prowlarr");
+
+            if (!_diskProvider.FileExists(exe))
+            {
+                throw new UpdateFailedException("Update package has no Materia program in it");
+            }
+
+            _diskProvider.SetFilePermissions(exe, "755", null);
+
+            _backupService.Backup(BackupType.Update);
+
+            if (_diskProvider.FolderExists(next))
+            {
+                _diskProvider.DeleteFolder(next, true);
+            }
+
+            _diskProvider.MoveFolder(staged, next);
+            _diskProvider.DeleteFolder(work, true);
+
+            _logger.ProgressInfo("Materia will restart into {0} shortly.", updatePackage.Version);
+            _commandQueueManager.Push(new ShutdownCommand());
 
             return true;
         }

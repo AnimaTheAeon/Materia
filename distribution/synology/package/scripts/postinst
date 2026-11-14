@@ -1,6 +1,6 @@
 #!/bin/sh
 mkdir -p "$SYNOPKG_PKGVAR"
-chmod 755 "$SYNOPKG_PKGDEST/bin/Prowlarr" 2>/dev/null
+chmod 755 "$SYNOPKG_PKGDEST/bin/Prowlarr" "$SYNOPKG_PKGDEST/materia-run.sh" 2>/dev/null
 {
 cat << 'NOTE'
 <p style="font-weight:bold;">Materia is installed</p>

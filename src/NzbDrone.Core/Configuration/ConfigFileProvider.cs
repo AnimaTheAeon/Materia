@@ -305,7 +305,8 @@ namespace NzbDrone.Core.Configuration
             }
         }
 
-        public bool UpdateAutomatically => _updateOptions.Automatically ?? GetValueBoolean("UpdateAutomatically", OsInfo.IsWindows, false);
+        // On by default on Windows and on Synology (where the package script swaps updates in).
+        public bool UpdateAutomatically => _updateOptions.Automatically ?? GetValueBoolean("UpdateAutomatically", OsInfo.IsWindows || Environment.GetEnvironmentVariable("MATERIA_SPK_UPDATE_DIR").IsNotNullOrWhiteSpace(), false);
 
         public UpdateMechanism UpdateMechanism =>
             Enum.TryParse<UpdateMechanism>(_updateOptions.Mechanism, out var enumValue)
