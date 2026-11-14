@@ -147,7 +147,7 @@ class UISettings extends Component {
                       values={themeOptions}
                       onChange={onInputChange}
                       {...settings.theme}
-                      value={settings.theme.value === 'green' ? 'green' : 'materia'}
+                      value={['green', 'blades'].includes(settings.theme.value) ? settings.theme.value : 'materia'}
                     />
                   </FormGroup>
                   <FormGroup>

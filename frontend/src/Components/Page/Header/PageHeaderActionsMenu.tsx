@@ -24,6 +24,18 @@ interface PageHeaderActionsMenuProps {
   onKeyboardShortcutsPress(): void;
 }
 
+const NEXT_THEME = {
+  materia: 'green',
+  green: 'blades',
+  blades: 'materia',
+} as const;
+
+const THEME_LABEL = {
+  materia: 'FFVII menu',
+  green: 'Box of X',
+  blades: 'Blades',
+} as const;
+
 function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
   const { onKeyboardShortcutsPress } = props;
 
@@ -44,7 +56,8 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
   }, [dispatch]);
 
   const theme = useTheme();
-  const nextTheme = theme === 'green' ? 'materia' : 'green';
+  // Cycles FFVII menu → Box of X → Blades → FFVII menu.
+  const nextTheme = NEXT_THEME[theme];
 
   const handleThemePress = useCallback(() => {
     dispatch(setUISetting({ name: 'theme', value: nextTheme }));
@@ -69,9 +82,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
 
           <MenuItem onPress={handleThemePress}>
             <Icon className={styles.itemIcon} name={icons.PALETTE} />
-            {nextTheme === 'green'
-              ? 'Switch to Box of X'
-              : 'Switch to FFVII menu'}
+            {`Switch to ${THEME_LABEL[nextTheme]}`}
           </MenuItem>
 
           <MenuItemSeparator />

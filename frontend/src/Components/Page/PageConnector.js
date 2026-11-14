@@ -159,7 +159,8 @@ function createMapStateToProps() {
         isSmallScreen: dimensions.isSmallScreen,
         authenticationEnabled: systemStatus.authentication !== 'none',
         enableColorImpairedMode,
-        isGreenTheme: theme === 'green'
+        isGreenTheme: theme === 'green',
+        isBladesTheme: theme === 'blades'
       };
     }
   );

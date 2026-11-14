@@ -6,6 +6,7 @@ import ConnectionLostModal from 'App/ConnectionLostModal';
 import SignalRConnector from 'Components/SignalRConnector';
 import AuthenticationRequiredModal from 'FirstRun/AuthenticationRequiredModal';
 import locationShape from 'Helpers/Props/Shapes/locationShape';
+import BladesLayout from './Blades/BladesLayout';
 import GreenFrame from './Green/GreenFrame';
 import PageHeader from './Header/PageHeader';
 import PageStatusBar from './PageStatusBar';
@@ -81,6 +82,7 @@ class Page extends Component {
       enableColorImpairedMode,
       authenticationEnabled,
       isGreenTheme,
+      isBladesTheme,
       onSidebarToggle,
       onSidebarVisibleChange
     } = this.props;
@@ -91,7 +93,15 @@ class Page extends Component {
           <SignalRConnector />
 
           {
-            isGreenTheme ?
+            isBladesTheme ?
+              <BladesLayout location={location}>
+                {children}
+              </BladesLayout> :
+              null
+          }
+
+          {
+            !isBladesTheme && (isGreenTheme ?
               <GreenFrame location={location}>
                 {children}
               </GreenFrame> :
@@ -117,7 +127,7 @@ class Page extends Component {
                 </div>
 
                 <PageStatusBar />
-              </>
+              </>)
           }
 
           <AppUpdatedModal
@@ -150,6 +160,7 @@ Page.propTypes = {
   enableColorImpairedMode: PropTypes.bool.isRequired,
   authenticationEnabled: PropTypes.bool.isRequired,
   isGreenTheme: PropTypes.bool.isRequired,
+  isBladesTheme: PropTypes.bool,
   onResize: PropTypes.func.isRequired,
   onSidebarToggle: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired
