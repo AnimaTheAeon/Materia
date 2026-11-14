@@ -3,6 +3,11 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.3
+
+- Updating shows a progress bar in every theme: downloading (with MB done), unpacking, then restarting. The page reloads by itself when the new version is running, and says plainly if an update fails.
+- Blades: rows near the top and bottom no longer get cut off at the right edge (a toolbar button could run past the blade).
+
 ## 1.5.2
 
 - Synology: Materia now updates itself, like the Windows version. It checks GitHub, downloads the new .spk, checks it, and restarts into it. If a new version won't start, it goes back to the one Package Center installed. You need to install this one .spk by hand; after that it's automatic (Config > General > Updates). Package Center keeps showing the version you installed by hand; the real version is under System > Status.

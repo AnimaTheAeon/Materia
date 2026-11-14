@@ -136,9 +136,10 @@ namespace NzbDrone.Core.Update
 
             _logger.ProgressInfo("Downloading update {0}", updatePackage.Version);
             _logger.Debug("Downloading update package from [{0}] to [{1}]", updatePackage.Url, packageDestination);
-            _httpClient.DownloadFile(updatePackage.Url, packageDestination);
+            DownloadWithProgress(updatePackage, packageDestination);
 
             _logger.ProgressInfo("Verifying update package");
+            UpdateProgress.Set("verify", updatePackage.Version.ToString());
 
             if (!_updateVerifier.Verify(updatePackage, packageDestination))
             {
@@ -149,6 +150,7 @@ namespace NzbDrone.Core.Update
             _logger.Info("Update package verified successfully");
 
             _logger.ProgressInfo("Extracting Update package");
+            UpdateProgress.Set("extract", updatePackage.Version.ToString());
             _archiveService.Extract(packageDestination, updateSandboxFolder);
             _logger.Info("Update package extracted successfully");
 
@@ -181,6 +183,7 @@ namespace NzbDrone.Core.Update
 
             _logger.Info("Starting update client {0}", updateClientExePath);
             _logger.ProgressInfo("Prowlarr will restart shortly.");
+            UpdateProgress.Set("restart", updatePackage.Version.ToString());
 
             _processProvider.Start(updateClientExePath, GetUpdaterArgs(updateSandboxFolder));
 
@@ -203,9 +206,10 @@ namespace NzbDrone.Core.Update
             _diskProvider.CreateFolder(unpacked);
 
             _logger.ProgressInfo("Downloading update {0}", updatePackage.Version);
-            _httpClient.DownloadFile(updatePackage.Url, spkPath);
+            DownloadWithProgress(updatePackage, spkPath);
 
             _logger.ProgressInfo("Verifying update package");
+            UpdateProgress.Set("verify", updatePackage.Version.ToString());
 
             if (!_updateVerifier.Verify(updatePackage, spkPath))
             {
@@ -214,6 +218,7 @@ namespace NzbDrone.Core.Update
             }
 
             _logger.ProgressInfo("Extracting Update package");
+            UpdateProgress.Set("extract", updatePackage.Version.ToString());
 
             // An .spk is a plain tar holding package.tgz, which holds bin/, ui/ and package_info.
             TarFile.ExtractToDirectory(spkPath, unpacked, true);
@@ -251,9 +256,38 @@ namespace NzbDrone.Core.Update
             _diskProvider.DeleteFolder(work, true);
 
             _logger.ProgressInfo("Materia will restart into {0} shortly.", updatePackage.Version);
+            UpdateProgress.Set("restart", updatePackage.Version.ToString());
             _commandQueueManager.Push(new ShutdownCommand());
 
             return true;
+        }
+
+        // Downloads the package, reporting the bytes so far for the progress bar.
+        // HttpClient writes to "<file>.part" and renames it when done.
+        private void DownloadWithProgress(UpdatePackage updatePackage, string destination)
+        {
+            var version = updatePackage.Version.ToString();
+            var part = destination + ".part";
+            UpdateProgress.Set("download", version, 0, updatePackage.Size);
+
+            using (new System.Threading.Timer(_ =>
+            {
+                try
+                {
+                    var done = File.Exists(part) ? new FileInfo(part).Length : 0;
+                    UpdateProgress.Set("download", version, done, updatePackage.Size);
+                }
+                catch (IOException)
+                {
+                    // The file is being renamed; the next tick catches up.
+                }
+            }, null, 300, 300))
+            {
+                _httpClient.DownloadFile(updatePackage.Url, destination);
+            }
+
+            var size = File.Exists(destination) ? new FileInfo(destination).Length : updatePackage.Size;
+            UpdateProgress.Set("download", version, size, Math.Max(size, updatePackage.Size));
         }
 
         private void EnsureValidBranch(UpdatePackage package)
@@ -374,23 +408,35 @@ namespace NzbDrone.Core.Update
             {
                 try
                 {
-                    InstallUpdate(latestAvailable);
+                    if (!InstallUpdate(latestAvailable))
+                    {
+                        UpdateProgress.Clear();
+                    }
+
                     _logger.ProgressDebug("Restarting Prowlarr to apply updates");
                 }
                 catch (UpdateFolderNotWritableException ex)
                 {
                     _logger.Error(ex, "Update process failed");
+                    UpdateProgress.Set("failed", latestAvailable.Version.ToString(), message: "Materia's folder isn't writable, so it can't update itself.");
                     throw new CommandFailedException("Startup folder not writable by user '{0}'", ex, Environment.UserName);
                 }
                 catch (UpdateVerificationFailedException ex)
                 {
                     _logger.Error(ex, "Update process failed");
+                    UpdateProgress.Set("failed", latestAvailable.Version.ToString(), message: "The download was corrupted. Nothing was changed.");
                     throw new CommandFailedException("Downloaded update package is corrupt", ex);
                 }
                 catch (UpdateFailedException ex)
                 {
                     _logger.Error(ex, "Update process failed");
+                    UpdateProgress.Set("failed", latestAvailable.Version.ToString(), message: ex.Message);
                     throw new CommandFailedException(ex);
+                }
+                catch (Exception ex)
+                {
+                    UpdateProgress.Set("failed", latestAvailable.Version.ToString(), message: "The update didn't work: " + ex.Message);
+                    throw;
                 }
             }
         }

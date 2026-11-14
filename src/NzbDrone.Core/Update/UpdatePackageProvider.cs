@@ -100,6 +100,7 @@ namespace NzbDrone.Core.Update
                     ReleaseDate = release.PublishedAt ?? DateTime.UtcNow,
                     FileName = asset.Name,
                     Url = asset.BrowserDownloadUrl,
+                    Size = asset.Size,
                     Hash = GetHash(asset, release),
                     Branch = branch,
                     Changes = GetChanges(release.Body)
@@ -189,6 +190,9 @@ namespace NzbDrone.Core.Update
 
             [JsonProperty("digest")]
             public string Digest { get; set; }
+
+            [JsonProperty("size")]
+            public long Size { get; set; }
         }
     }
 }

@@ -11,5 +11,6 @@ namespace NzbDrone.Core.Update
         public UpdateChanges Changes { get; set; }
         public string Hash { get; set; }
         public string Branch { get; set; }
+        public long Size { get; set; }
     }
 }

@@ -23,6 +23,24 @@ namespace Prowlarr.Api.V1.Update
             _configFileProvider = configFileProvider;
         }
 
+        // Materia: what the running update is doing, for the page's progress bar.
+        [HttpGet("progress")]
+        [Produces("application/json")]
+        public object GetProgress()
+        {
+            var progress = UpdateProgress.Get();
+
+            return new
+            {
+                progress.Phase,
+                progress.Version,
+                progress.Done,
+                progress.Total,
+                progress.Message,
+                Current = BuildInfo.Version.ToString()
+            };
+        }
+
         [HttpGet]
         [Produces("application/json")]
         public List<UpdateResource> GetRecentUpdates()
