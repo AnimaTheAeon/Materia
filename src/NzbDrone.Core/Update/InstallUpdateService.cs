@@ -270,7 +270,7 @@ namespace NzbDrone.Core.Update
             var part = destination + ".part";
             UpdateProgress.Set("download", version, 0, updatePackage.Size);
 
-            using (new System.Threading.Timer(_ =>
+            void Report(object state)
             {
                 try
                 {
@@ -281,7 +281,9 @@ namespace NzbDrone.Core.Update
                 {
                     // The file is being renamed; the next tick catches up.
                 }
-            }, null, 300, 300))
+            }
+
+            using (new System.Threading.Timer(Report, null, 300, 300))
             {
                 _httpClient.DownloadFile(updatePackage.Url, destination);
             }
