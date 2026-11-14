@@ -143,7 +143,7 @@ class UISettings extends Component {
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="theme"
-                      helpText="FFVII menu or Box of X. Switches as soon as you save."
+                      helpText="FFVII Menu, Xbox or Blades. Switches as soon as you save."
                       values={themeOptions}
                       onChange={onInputChange}
                       {...settings.theme}

@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.1
+
+- The themes are now called FFVII Menu, Xbox and Blades. Your choice is kept.
+
 ## 1.5.0
 
 - New look: Blades (Config > UI > Theme, or Switch to Blades in the top-right menu). Glossy silver blades, one per section, the open one in its own color holding the page. Click a blade, press Left/Right, drag a tab or the top band sideways, or use the arrow buttons; Esc goes back to Indexers and the mouse back button steps back a blade. The same look as Lifestream, Jenova, Turks and Midgar.
