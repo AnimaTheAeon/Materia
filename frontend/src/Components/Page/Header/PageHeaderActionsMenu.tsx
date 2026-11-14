@@ -31,8 +31,8 @@ const NEXT_THEME = {
 } as const;
 
 const THEME_LABEL = {
-  materia: 'FFVII menu',
-  green: 'Box of X',
+  materia: 'FFVII Menu',
+  green: 'Xbox',
   blades: 'Blades',
 } as const;
 
