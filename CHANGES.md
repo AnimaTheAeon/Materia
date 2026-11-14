@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.4
+
+- New start screen: two linked materia slots, in the FFVII menu, Xbox and Blades looks. It replaces the old loading logo and jokes.
+
 ## 1.5.3
 
 - Updating shows a progress bar in every theme: downloading (with MB done), unpacking, then restarting. The page reloads by itself when the new version is running, and says plainly if an update fails.

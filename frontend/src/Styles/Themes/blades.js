@@ -1,5 +1,4 @@
-// Materia: "Blades" theme (shared with Lifestream, Jenova, Turks and Midgar;
-// project doc claude/themes/blades.md). White text and see-through glass on the
+// Materia: "Blades" theme (shared with Lifestream, Jenova, Turks and Midgar). White text and see-through glass on the
 // open blade's color. Same keys as the other themes.
 const prowlarrOrange = '#ffffff';
 
