@@ -1,8 +1,11 @@
+using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Lifecycle;
@@ -66,11 +69,34 @@ namespace NzbDrone.Host
             _eventAggregator.PublishEvent(new ApplicationStartedEvent());
         }
 
+        private void WriteSynologyRestartRequest()
+        {
+            // On Synology, materia-run.sh keeps Materia running. A restart can't
+            // start a new copy itself, so it leaves a note for the script and exits.
+            var dir = Environment.GetEnvironmentVariable("MATERIA_SPK_UPDATE_DIR");
+
+            if (dir.IsNullOrWhiteSpace())
+            {
+                return;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(dir);
+                File.WriteAllText(Path.Combine(dir, "restart"), string.Empty);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Could not leave the restart note for the run script");
+            }
+        }
+
         private void OnAppStopped()
         {
             if (_runtimeInfo.RestartPending)
             {
                 _logger.Info("Restart pending.");
+                WriteSynologyRestartRequest();
             }
             else
             {

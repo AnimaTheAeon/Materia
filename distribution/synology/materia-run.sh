@@ -12,6 +12,8 @@ UPD="$VAR/app-update"
 child=""
 stopping=0
 
+mkdir -p "$UPD"
+
 trap 'stopping=1; [ -n "$child" ] && kill -TERM "$child" 2>/dev/null' TERM INT
 
 while :; do
@@ -30,7 +32,8 @@ while :; do
 	child=$!
 	echo "$child" > "$VAR/materia-app.pid"
 	# wait returns early when a signal arrives; keep waiting until it has exited.
-	rc=0
+	wait "$child"
+	rc=$?
 	while kill -0 "$child" 2>/dev/null; do
 		wait "$child"
 		rc=$?
@@ -39,6 +42,14 @@ while :; do
 	rm -f "$VAR/materia-app.pid"
 
 	[ "$stopping" = 1 ] && exit 0
+	# Restart was asked for inside the app (the Restart button, restoring a
+	# backup, changing the port): start it again.
+	if [ -f "$UPD/restart" ]; then
+		rm -f "$UPD/restart"
+		echo "$(date) materia-run: restarting as asked"
+		sleep 2
+		continue
+	fi
 	# An update is ready: loop round and start it.
 	[ -d "$UPD/next" ] && continue
 

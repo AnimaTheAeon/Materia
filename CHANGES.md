@@ -3,6 +3,11 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.7
+
+- Fixed Materia not coming back after a Restart inside the app (the Restart button, restoring a backup, changing the port) on a Synology. It now restarts itself.
+- Materia no longer loads usage-tracking and error-report scripts in the browser, and nothing is sent to anyone's servers.
+
 ## 1.5.6
 
 - Fixed dropdown lists in the Blades look being see-through, so the text behind them showed through and was hard to read. They now have a solid background, with a clear highlight for the option under your cursor and the one that's selected.
