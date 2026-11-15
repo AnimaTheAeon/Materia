@@ -193,6 +193,10 @@ module.exports = {
   // Form
 
   inputBackgroundColor: 'rgba(0, 0, 0, 0.22)',
+  // Dropdown lists sit on top of other text, so they need a solid background.
+  selectOptionsBackgroundColor: '#2a2540',
+  selectOptionHoverBackgroundColor: 'rgba(255, 255, 255, 0.16)',
+  selectOptionSelectedBackgroundColor: 'rgba(255, 255, 255, 0.28)',
   inputReadOnlyBackgroundColor: 'rgba(0, 0, 0, 0.3)',
   inputHoverBackgroundColor: 'rgba(255, 255, 255, 0.15)',
   inputSelectedBackgroundColor: 'rgba(255, 255, 255, 0.08)',

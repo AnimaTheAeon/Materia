@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.6
+
+- Fixed dropdown lists in the Blades look being see-through, so the text behind them showed through and was hard to read. They now have a solid background, with a clear highlight for the option under your cursor and the one that's selected.
+
 ## 1.5.5
 
 - Fixed checkboxes not showing whether they were on or off in the Xbox and Blades looks (and hard to read in the FFVII look). An empty box is now dark with a clear outline, and a checked one fills in with a dark tick.
