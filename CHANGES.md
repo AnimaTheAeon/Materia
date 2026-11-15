@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.5
+
+- Fixed checkboxes not showing whether they were on or off in the Xbox and Blades looks (and hard to read in the FFVII look). An empty box is now dark with a clear outline, and a checked one fills in with a dark tick.
+
 ## 1.5.4
 
 - New start screen: two linked materia slots, in the FFVII menu, Xbox and Blades looks. It replaces the old loading logo and jokes.
