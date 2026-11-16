@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.8
+
+- The sign-in page now matches the look picked in Settings → UI: FFVII Menu, Xbox or Blades.
+
 ## 1.5.7
 
 - Fixed Materia not coming back after a Restart inside the app (the Restart button, restoring a backup, changing the port) on a Synology. It now restarts itself.
