@@ -27,13 +27,15 @@ interface PageHeaderActionsMenuProps {
 const NEXT_THEME = {
   materia: 'green',
   green: 'blades',
-  blades: 'materia',
+  blades: 'glass',
+  glass: 'materia',
 } as const;
 
 const THEME_LABEL = {
   materia: 'FFVII Menu',
   green: 'Xbox',
   blades: 'Blades',
+  glass: 'Liquid Glass',
 } as const;
 
 function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
@@ -56,7 +58,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
   }, [dispatch]);
 
   const theme = useTheme();
-  // Cycles FFVII menu → Box of X → Blades → FFVII menu.
+  // Cycles FFVII menu → Box of X → Blades → Liquid Glass → FFVII menu.
   const nextTheme = NEXT_THEME[theme];
 
   const handleThemePress = useCallback(() => {

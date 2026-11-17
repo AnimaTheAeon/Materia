@@ -3,6 +3,11 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.9
+
+- New look: Liquid Glass. Dark frosted glass over soft color, capsule buttons and fields, switches instead of check boxes, and a menu pill that glides to the page you open. Dialogs and menus spring in. Pick it in Settings → UI → Theme, or from the power menu. The other three looks are unchanged.
+- The sign-in page has a Liquid Glass version too.
+
 ## 1.5.8
 
 - The sign-in page now matches the look picked in Settings → UI: FFVII Menu, Xbox or Blades.
