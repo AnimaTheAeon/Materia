@@ -1,5 +1,8 @@
 .messageContainer {
   display: flex;
+  align-items: center;
+  gap: 10px;
+
   margin-bottom: 20px;
 }
 
@@ -8,10 +11,20 @@
   font-size: 30px;
 }
 
+.updateIcon {
+  color: #ffc230;
+  font-size: 30px;
+}
+
 .message {
+  flex: 1 1 auto;
   padding-left: 5px;
   font-size: 18px;
   line-height: 30px;
+}
+
+.check {
+  flex: none;
 }
 
 .loading {

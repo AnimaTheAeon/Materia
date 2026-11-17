@@ -75,7 +75,6 @@ function Updates() {
   const [isMajorUpdateModalOpen, setIsMajorUpdateModalOpen] = useState(false);
   const hasError = !!(updatesError || generalSettingsError);
   const hasUpdates = isPopulated && !hasError && items.length > 0;
-  const noUpdates = isPopulated && !hasError && !items.length;
 
   const externalUpdaterPrefix = translate('UpdateAppDirectlyLoadError');
   const externalUpdaterMessages: Partial<Record<UpdateMechanism, string>> = {
@@ -101,8 +100,6 @@ function Updates() {
       ),
     };
   }, [currentVersion, items]);
-
-  const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
 
   const handleInstallLatestPress = useCallback(() => {
     if (isMajorUpdate) {
@@ -132,13 +129,65 @@ function Updates() {
     dispatch(fetchGeneralSettings());
   }, [dispatch]);
 
+  // Check now: asks the update server again, like every other app.
+  const [checkedAt, setCheckedAt] = useState<Date | null>(null);
+
+  const handleCheckPress = useCallback(() => {
+    dispatch(fetchUpdates());
+    setCheckedAt(new Date());
+  }, [dispatch]);
+
+  const shortVersion = currentVersion.split('.').slice(0, 3).join('.');
+  const latestItem = items.find((update) => update.latest);
+  let statusMessage = `You're on Materia ${shortVersion}, the newest version.`;
+
+  if (updatesError) {
+    statusMessage = `You're on Materia ${shortVersion}. Materia couldn't reach the update server; press Check now to try again.`;
+  } else if (hasUpdateToInstall && latestItem) {
+    statusMessage = `Materia ${latestItem.version} is ready. You're on ${shortVersion}.`;
+  }
+
+  let statusIcon = icons.CHECK_CIRCLE;
+
+  if (updatesError) {
+    statusIcon = icons.WARNING;
+  } else if (hasUpdateToInstall) {
+    statusIcon = icons.DOWNLOAD;
+  }
+
+  if (checkedAt && !isFetching && !updatesError) {
+    statusMessage += ` Checked at ${checkedAt.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: '2-digit',
+    })}.`;
+  }
+
   return (
     <PageContent title={translate('Updates')}>
       <PageContentBody>
         {isPopulated || hasError ? null : <LoadingIndicator />}
 
-        {noUpdates ? (
-          <Alert kind={kinds.INFO}>{translate('NoUpdatesAreAvailable')}</Alert>
+        {isPopulated || updatesError ? (
+          <div className={styles.messageContainer}>
+            <Icon
+              className={
+                hasUpdateToInstall ? styles.updateIcon : styles.upToDateIcon
+              }
+              name={statusIcon}
+              kind={updatesError ? kinds.WARNING : undefined}
+              size={30}
+            />
+
+            <div className={styles.message}>{statusMessage}</div>
+
+            <SpinnerButton
+              className={styles.check}
+              isSpinning={isFetching}
+              onPress={handleCheckPress}
+            >
+              Check now
+            </SpinnerButton>
+          </div>
         ) : null}
 
         {hasUpdateToInstall ? (
@@ -167,27 +216,8 @@ function Updates() {
                 </div>
               </>
             )}
-
-            {isFetching ? (
-              <LoadingIndicator className={styles.loading} size={20} />
-            ) : null}
           </div>
         ) : null}
-
-        {noUpdateToInstall && (
-          <div className={styles.messageContainer}>
-            <Icon
-              className={styles.upToDateIcon}
-              name={icons.CHECK_CIRCLE}
-              size={30}
-            />
-            <div className={styles.message}>{translate('OnLatestVersion')}</div>
-
-            {isFetching && (
-              <LoadingIndicator className={styles.loading} size={20} />
-            )}
-          </div>
-        )}
 
         {hasUpdates && (
           <div>
@@ -261,12 +291,6 @@ function Updates() {
             })}
           </div>
         )}
-
-        {updatesError ? (
-          <Alert kind={kinds.WARNING}>
-            {translate('FailedToFetchUpdates')}
-          </Alert>
-        ) : null}
 
         {generalSettingsError ? (
           <Alert kind={kinds.DANGER}>

@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.15
+
+- System > Updates now has a Check now button, always there, like the other apps. The line next to it says whether you're on the newest version or which version is ready, and when it last checked. Install Latest shows under it when there's something to install.
+
 ## 1.5.14
 
 - Fixed: after an update the page could switch to a "Failed to load" screen while Materia restarted, instead of reloading by itself into the new version. Once the page has loaded, a moment without Materia no longer replaces it.
