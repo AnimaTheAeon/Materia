@@ -20,7 +20,7 @@ import {
 } from 'Components/Page/Sidebar/PageSidebar';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import useMateriaStatus from '../useMateriaStatus';
-import { sinkIntoGlow, zoomIntoOrb, zoomOutOfOrb } from './orbZoom';
+import { sinkIntoGlow, softSwitch, zoomIntoOrb, zoomOutOfOrb } from './orbZoom';
 import styles from './GreenFrame.css';
 
 interface MenuLink {
@@ -38,6 +38,29 @@ const ARC = [0, 40, 58, 40, 0];
 interface GreenFrameProps {
   location: { pathname: string };
   children: ReactNode;
+}
+
+interface PageTabProps {
+  index: number;
+  title: string;
+  isActive: boolean;
+  onOpen: (index: number) => void;
+}
+
+// One tab of the page bar along the bottom of every page.
+function PageTab({ index, title, isActive, onOpen }: PageTabProps) {
+  const handleClick = useCallback(() => onOpen(index), [index, onOpen]);
+
+  return (
+    <button
+      type="button"
+      className={classNames(styles.pageTab, isActive && styles.pageTabActive)}
+      aria-current={isActive ? 'page' : undefined}
+      onClick={handleClick}
+    >
+      {title}
+    </button>
+  );
 }
 
 function sectionIndex(pathname: string) {
@@ -266,6 +289,16 @@ function GreenFrame({ location, children }: GreenFrameProps) {
     setAtHome(true);
   }, [pathname]);
 
+  // Page bar: jump straight to another page with a soft fade.
+  const openFromBar = useCallback(
+    (index: number) => {
+      if (index !== current || pathname !== links[index].to) {
+        softSwitch(() => openNow(index));
+      }
+    },
+    [current, pathname, openNow]
+  );
+
   // BACK: the page sinks into the glow, then the orb shrinks back.
   const goHome = useCallback(() => sinkIntoGlow(goHomeNow), [goHomeNow]);
 
@@ -424,6 +457,17 @@ function GreenFrame({ location, children }: GreenFrameProps) {
           <div className={styles.content}>{children}</div>
 
           <div className={styles.footer}>
+            <nav className={styles.pageBar} aria-label="Pages">
+              {links.map((link, index) => (
+                <PageTab
+                  key={link.to}
+                  index={index}
+                  title={link.title()}
+                  isActive={index === current}
+                  onOpen={openFromBar}
+                />
+              ))}
+            </nav>
             <Hint keyName="ESC" label="BACK" onPress={goHome} />
           </div>
         </div>

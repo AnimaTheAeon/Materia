@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Update
             }
 
             _logger.Info("Starting update client {0}", updateClientExePath);
-            _logger.ProgressInfo("Prowlarr will restart shortly.");
+            _logger.ProgressInfo("Materia will restart shortly.");
             UpdateProgress.Set("restart", updatePackage.Version.ToString());
 
             _processProvider.Start(updateClientExePath, GetUpdaterArgs(updateSandboxFolder));
@@ -415,7 +415,7 @@ namespace NzbDrone.Core.Update
                         UpdateProgress.Clear();
                     }
 
-                    _logger.ProgressDebug("Restarting Prowlarr to apply updates");
+                    _logger.ProgressDebug("Restarting Materia to apply updates");
                 }
                 catch (UpdateFolderNotWritableException ex)
                 {

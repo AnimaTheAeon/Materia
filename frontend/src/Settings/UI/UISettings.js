@@ -48,6 +48,15 @@ export const timeFormatOptions = [
 class UISettings extends Component {
 
   //
+  // Listeners
+
+  // Switch and save straight away, like the other apps.
+  onThemeChange = ({ name, value }) => {
+    this.props.onInputChange({ name, value });
+    this.props.onSavePress();
+  };
+
+  //
   // Render
 
   render() {
@@ -143,9 +152,9 @@ class UISettings extends Component {
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="theme"
-                      helpText="FFVII Menu, Xbox or Blades. Switches as soon as you save."
+                      helpText="Applies right away."
                       values={themeOptions}
-                      onChange={onInputChange}
+                      onChange={this.onThemeChange}
                       {...settings.theme}
                       value={['green', 'blades', 'glass'].includes(settings.theme.value) ? settings.theme.value : 'materia'}
                     />

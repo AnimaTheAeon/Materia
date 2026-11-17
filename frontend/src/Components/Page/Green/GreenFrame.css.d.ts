@@ -25,6 +25,9 @@ interface CssExports {
   'node': string;
   'orbWrap': string;
   'page': string;
+  'pageBar': string;
+  'pageTab': string;
+  'pageTabActive': string;
   's1': string;
   's2': string;
   's3': string;

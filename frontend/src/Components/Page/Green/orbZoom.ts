@@ -156,3 +156,35 @@ export function zoomOutOfOrb() {
       busy = false;
     });
 }
+
+/** Page bar: a short soft fade between pages. */
+export function softSwitch(open: () => void) {
+  if (busy || calm()) {
+    open();
+    return;
+  }
+
+  busy = true;
+  const glow = glowLayer();
+
+  stop(glow);
+  glow
+    .animate([{ opacity: 0 }, { opacity: 0.7 }], {
+      duration: 200,
+      easing: 'ease-in-out',
+      fill: 'forwards',
+    })
+    .finished.then(() => {
+      open();
+      stop(glow);
+
+      return glow.animate([{ opacity: 0.7 }, { opacity: 0 }], {
+        duration: 300,
+        easing: 'ease-in-out',
+        fill: 'forwards',
+      }).finished;
+    })
+    .finally(() => {
+      busy = false;
+    });
+}

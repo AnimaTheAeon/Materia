@@ -3,6 +3,13 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.12
+
+- After an update installs, the page now reloads by itself instead of asking you to reload.
+- Update messages say "Restarting Materia" (they said Prowlarr).
+- Settings > UI: picking a theme applies and saves it right away, no Save needed.
+- Xbox theme: every page now has the page bar along the bottom, one tab per page, next to Back. It is hidden on the home screen.
+
 ## 1.5.11
 
 - System > Status no longer has the More Info section. The license line (GPLv3, based on Prowlarr) is now under About.

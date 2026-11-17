@@ -46,6 +46,15 @@ async function fetchProgress(): Promise<Progress | null> {
   }
 }
 
+// The running version carries a build number (1.5.11.32); the release is just
+// 1.5.11. Compare only the parts the release names.
+const sameVersion = (running: string, release: string) => {
+  const want = release.split('.').map((n) => Number(n) || 0);
+  const have = running.split('.').map((n) => Number(n) || 0);
+
+  return want.every((n, i) => (have[i] ?? 0) === n);
+};
+
 function UpdateProgress() {
   const running = useSelector((state: AppState) =>
     state.commands.items.some(
@@ -90,7 +99,7 @@ function UpdateProgress() {
 
     const title = `Updating Materia to ${target.current}`;
 
-    if (progress && progress.current === target.current) {
+    if (progress && sameVersion(progress.current, target.current)) {
       finished.current = true;
       setView({
         title: `Materia ${target.current} is installed`,
