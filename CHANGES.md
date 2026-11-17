@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.14
+
+- Fixed: after an update the page could switch to a "Failed to load" screen while Materia restarted, instead of reloading by itself into the new version. Once the page has loaded, a moment without Materia no longer replaces it.
+
 ## 1.5.13
 
 - Fixed: Install Latest could sit at "Starting the download, 2%" forever. If the update stopped before downloading (for example when the update server didn't answer), the page never found out. It now says the update didn't start, and why.
