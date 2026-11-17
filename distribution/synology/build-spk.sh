@@ -19,7 +19,7 @@ chmod 755 "$WORK/pkg/bin/Prowlarr"
 cp -R "$HERE/ui/." "$WORK/pkg/ui/"
 # Materia updates itself: it downloads the next .spk and materia-run.sh swaps
 # the new version in (the old Prowlarr updater isn't used, so it's left out).
-printf 'PackageVersion=%s\nPackageAuthor=AnimaTheAeon\nUpdateMethod=BuiltIn\nBranch=main\n' "$VERSION-$BUILD" > "$WORK/pkg/package_info"
+printf 'PackageVersion=%s\nPackageAuthor=Materia\nUpdateMethod=BuiltIn\nBranch=main\n' "$VERSION-$BUILD" > "$WORK/pkg/package_info"
 cp "$HERE/materia-run.sh" "$WORK/pkg/materia-run.sh"
 chmod 755 "$WORK/pkg/materia-run.sh"
 (cd "$WORK/pkg" && tar --owner=0 --group=0 -czf "$WORK/package.tgz" bin ui package_info materia-run.sh)

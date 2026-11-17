@@ -14,7 +14,7 @@ function CategoryLabel({ categories = [] }: CategoryLabelProps) {
     return (
       <Tooltip
         anchor={<Label kind={kinds.DANGER}>{translate('Unknown')}</Label>}
-        tooltip="Please report this issue to the GitHub as this shouldn't be happening"
+        tooltip="This category isn't known. It shouldn't happen."
         position={tooltipPositions.LEFT}
       />
     );

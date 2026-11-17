@@ -3,6 +3,12 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.10
+
+- System > Status no longer lists web links for Materia's home page or problem reports.
+- The Windows installer and Package Center no longer show developer or support web links; the developer is shown as Materia.
+- The Updates page no longer points to a commit history.
+
 ## 1.5.9
 
 - New look: Liquid Glass. Dark frosted glass over soft color, capsule buttons and fields, switches instead of check boxes, and a menu pill that glides to the page you open. Dialogs and menus spring in. Pick it in Settings → UI → Theme, or from the power menu. The other three looks are unchanged.

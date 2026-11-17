@@ -10,18 +10,6 @@ function MoreInfo() {
   return (
     <FieldSet legend={translate('MoreInfo')}>
       <DescriptionList>
-        <DescriptionListItemTitle>Materia</DescriptionListItemTitle>
-        <DescriptionListItemDescription>
-          <Link to="https://github.com/AnimaTheAeon/Materia">
-            github.com/AnimaTheAeon/Materia
-          </Link>
-        </DescriptionListItemDescription>
-        <DescriptionListItemTitle>Problems</DescriptionListItemTitle>
-        <DescriptionListItemDescription>
-          <Link to="https://github.com/AnimaTheAeon/Materia/issues">
-            github.com/AnimaTheAeon/Materia/issues
-          </Link>
-        </DescriptionListItemDescription>
         <DescriptionListItemTitle>Help pages</DescriptionListItemTitle>
         <DescriptionListItemDescription>
           <Link to="https://wiki.servarr.com/prowlarr">

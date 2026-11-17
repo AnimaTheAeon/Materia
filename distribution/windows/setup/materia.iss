@@ -2,8 +2,7 @@
 ; Data lives in %APPDATA%\Materia; the program goes in %LOCALAPPDATA%\Programs\Materia.
 
 #define AppName "Materia"
-#define AppPublisher "AnimaTheAeon"
-#define AppURL "https://github.com/AnimaTheAeon/Materia"
+#define AppPublisher "Materia"
 #define AppExeName "Prowlarr.exe"
 #define AppVersion GetEnv('MATERIAVERSION')
 
@@ -13,9 +12,6 @@ AppName={#AppName}
 AppVersion={#AppVersion}
 AppVerName={#AppName} {#AppVersion}
 AppPublisher={#AppPublisher}
-AppPublisherURL={#AppURL}
-AppSupportURL={#AppURL}/issues
-AppUpdatesURL={#AppURL}/releases
 DefaultDirName={localappdata}\Programs\Materia
 DisableDirPage=yes
 DefaultGroupName={#AppName}
