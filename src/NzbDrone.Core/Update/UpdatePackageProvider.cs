@@ -58,7 +58,44 @@ namespace NzbDrone.Core.Update
                 .ToList();
         }
 
+        // The last list the update server sent. Pressing Install right after the
+        // page listed an update asks again; if that second request is refused
+        // (the server limits how often one address may ask), use this list.
+        private static readonly object LastGate = new object();
+        private static List<UpdatePackage> _lastPackages;
+        private static DateTime _lastAt;
+
         private List<UpdatePackage> GetPackages(string branch)
+        {
+            try
+            {
+                var packages = FetchPackages(branch);
+
+                lock (LastGate)
+                {
+                    _lastPackages = packages;
+                    _lastAt = DateTime.UtcNow;
+                }
+
+                return packages;
+            }
+            catch (Exception ex)
+            {
+                lock (LastGate)
+                {
+                    if (_lastPackages != null && DateTime.UtcNow - _lastAt < TimeSpan.FromHours(1))
+                    {
+                        _logger.Warn(ex, "Update server didn't answer; using the list from {0:HH:mm} UTC", _lastAt);
+
+                        return _lastPackages;
+                    }
+                }
+
+                throw;
+            }
+        }
+
+        private List<UpdatePackage> FetchPackages(string branch)
         {
             var request = new HttpRequestBuilder(ReleasesUrl)
                 .AddQueryParam("per_page", 20)

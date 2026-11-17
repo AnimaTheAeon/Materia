@@ -3,6 +3,14 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.13
+
+- Fixed: Install Latest could sit at "Starting the download, 2%" forever. If the update stopped before downloading (for example when the update server didn't answer), the page never found out. It now says the update didn't start, and why.
+- Fixed: an update waited until every other task had finished (an indexer sync to an app that doesn't answer can take many minutes). It now starts right away; if it ever has to wait, the page says what it's waiting for.
+- Install uses the update list the page just loaded if the update server doesn't answer a second time.
+- Downloads no longer give up after 5 minutes on a slow connection. A download that stops getting data for 90 seconds is stopped, with a plain message.
+- Update error messages never show the address of the update server.
+
 ## 1.5.12
 
 - After an update installs, the page now reloads by itself instead of asking you to reload.
