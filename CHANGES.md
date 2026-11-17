@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.11
+
+- System > Status no longer has the More Info section. The license line (GPLv3, based on Prowlarr) is now under About.
+
 ## 1.5.10
 
 - System > Status no longer lists web links for Materia's home page or problem reports.

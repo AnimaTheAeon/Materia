@@ -95,6 +95,8 @@ function About() {
           title={translate('Uptime')}
           data={<StartTime startTime={startTime} />}
         />
+
+        <DescriptionListItem title="License" data="GPLv3, based on Prowlarr" />
       </DescriptionList>
     </FieldSet>
   );
