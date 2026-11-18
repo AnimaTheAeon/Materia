@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.16
+
+- Indexers Materia adds to Midgar and Turks are labelled "(Materia)" instead of "(Prowlarr)". Ones already there are renamed at the next sync.
+
 ## 1.5.15
 
 - System > Updates now has a Check now button, always there, like the other apps. The line next to it says whether you're on the newest version or which version is ready, and when it last checked. Install Latest shows under it when there's something to install.

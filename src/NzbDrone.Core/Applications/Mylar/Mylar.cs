@@ -155,8 +155,8 @@ namespace NzbDrone.Core.Applications.Mylar
 
             var mylarIndexer = new MylarIndexer
             {
-                Name = originalName ?? $"{indexer.Name} (Prowlarr)",
-                Altername = $"{indexer.Name} (Prowlarr)",
+                Name = originalName ?? $"{indexer.Name} (Materia)",
+                Altername = $"{indexer.Name} (Materia)",
                 Host = $"{Settings.ProwlarrUrl.TrimEnd('/')}/{indexer.Id}/api",
                 Apikey = _configFileProvider.ApiKey,
                 Categories = string.Join(",", indexerCapabilities.Categories.SupportedCategories(Settings.SyncCategories.ToArray())),
