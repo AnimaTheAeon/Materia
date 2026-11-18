@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.17
+
+- The Liquid Glass look is now called Dark Glass. Nothing else changes: if you were using it, you still are.
+
 ## 1.5.16
 
 - Indexers Materia adds to Midgar and Turks are labelled "(Materia)" instead of "(Prowlarr)". Ones already there are renamed at the next sync.
@@ -42,8 +46,8 @@ Add a section here before bumping VERSION.
 
 ## 1.5.9
 
-- New look: Liquid Glass. Dark frosted glass over soft color, capsule buttons and fields, switches instead of check boxes, and a menu pill that glides to the page you open. Dialogs and menus spring in. Pick it in Settings → UI → Theme, or from the power menu. The other three looks are unchanged.
-- The sign-in page has a Liquid Glass version too.
+- New look: Dark Glass. Dark frosted glass over soft color, capsule buttons and fields, switches instead of check boxes, and a menu pill that glides to the page you open. Dialogs and menus spring in. Pick it in Settings → UI → Theme, or from the power menu. The other three looks are unchanged.
+- The sign-in page has a Dark Glass version too.
 
 ## 1.5.8
 
@@ -107,7 +111,7 @@ Add a section here before bumping VERSION.
 - Fixed: first-time setup couldn't save your username and password
 - Fixed: Config → General couldn't be saved
 - Fixed: a false "not a valid release branch" warning on every install
-- Box of X: opening a page now fades slowly through dark green instead of flashing bright lime
+- Xbox: opening a page now fades slowly through dark green instead of flashing bright lime
 - Materia no longer contacts Prowlarr's servers for news or a time check
 - Indexers now see the Prowlarr version Materia is built on (3.0.2)
 - Search: the search box is now at the top of the Search page
@@ -118,9 +122,9 @@ Add a section here before bumping VERSION.
 - Sync profile tags are readable in both themes
 - Stats: colors match the theme, and you see "No stats yet" instead of empty charts
 - The indexer toolbar is simpler (Sync is on the Apps page; column options are the gear in the table header)
-- The status line says "No indexers yet" when you haven't added any, and Box of X shows it on two lines
-- Box of X on a phone: the top row fits, and section tabs scroll sideways on one line
-- Box of X: the first Indexers tab is now "List"
+- The status line says "No indexers yet" when you haven't added any, and Xbox shows it on two lines
+- Xbox on a phone: the top row fits, and section tabs scroll sideways on one line
+- Xbox: the first Indexers tab is now "List"
 - The top-right menu (restart, shut down, theme, log out) uses a power icon
 - FFVII menu: the Time box says "Equipped" instead of "Materia"
 - Clearer wording on first-time setup, the Download Clients page, the login page and help links
@@ -131,15 +135,15 @@ Add a section here before bumping VERSION.
 
 ## 1.1.2
 
-- Box of X: zoom into the orb to open a page, and back out on BACK
+- Xbox: zoom into the orb to open a page, and back out on BACK
 
 ## 1.1.1
 
-- Box of X: linked materia slots in the home orb
+- Xbox: linked materia slots in the home orb
 
 ## 1.1.0
 
-- Added the Box of X theme, with a theme picker in Config → UI and in the top-right menu
+- Added the Xbox theme, with a theme picker in Config → UI and in the top-right menu
 
 ## 1.0.1
 

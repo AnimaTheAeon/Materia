@@ -1,7 +1,7 @@
 const prowlarrOrange = '#c8ff4a';
 
 module.exports = {
-  // Box of X (green console dashboard) window colors
+  // Xbox (green console dashboard) window colors
   windowGradient: 'linear-gradient(135deg, rgba(26, 86, 12, 0.88) 0%, rgba(14, 60, 8, 0.88) 40%, rgba(10, 48, 6, 0.9) 60%, rgba(3, 22, 3, 0.92) 100%)',
   windowBorderLight: 'rgba(160, 255, 80, 0.75)',
   windowBorderMid: '#50a028',

@@ -1,4 +1,4 @@
-// Box of X: opening a page from home gently grows and dims the big orb while
+// Xbox: opening a page from home gently grows and dims the big orb while
 // the screen fades through dark green, then the page fades in. BACK plays it
 // in reverse. Kept slow and dark on purpose: no bright flash.
 

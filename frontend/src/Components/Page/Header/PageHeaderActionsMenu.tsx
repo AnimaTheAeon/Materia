@@ -35,7 +35,7 @@ const THEME_LABEL = {
   materia: 'FFVII Menu',
   green: 'Xbox',
   blades: 'Blades',
-  glass: 'Liquid Glass',
+  glass: 'Dark Glass',
 } as const;
 
 function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
@@ -58,7 +58,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
   }, [dispatch]);
 
   const theme = useTheme();
-  // Cycles FFVII menu → Box of X → Blades → Liquid Glass → FFVII menu.
+  // Cycles FFVII menu → Xbox → Blades → Dark Glass → FFVII menu.
   const nextTheme = NEXT_THEME[theme];
 
   const handleThemePress = useCallback(() => {

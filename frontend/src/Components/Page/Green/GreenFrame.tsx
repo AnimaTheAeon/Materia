@@ -251,7 +251,7 @@ function GreenFrame({ location, children }: GreenFrameProps) {
   );
 
   useEffect(() => {
-    // The FFVII layout loads health from its menu; Box of X has no side menu.
+    // The FFVII layout loads health from its menu; Xbox has no side menu.
     if (!isHealthPopulated) {
       dispatch(fetchHealth());
     }

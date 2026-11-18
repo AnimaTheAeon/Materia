@@ -14,7 +14,7 @@ function ApplyTheme() {
     // Lets global styles (fonts, upper-case headings) follow the theme.
     document.documentElement.setAttribute('data-theme', theme);
 
-    // Liquid Glass: shapes, blur and motion hang off html.glass.
+    // Dark Glass: shapes, blur and motion hang off html.glass.
     document.documentElement.classList.toggle('glass', theme === 'glass');
     if (theme === 'glass' && !document.getElementById('glass-css')) {
       const style = document.createElement('style');
@@ -24,7 +24,7 @@ function ApplyTheme() {
     }
   }, [theme]);
 
-  // Liquid Glass: the menu's selection pill glides to the open page. The
+  // Dark Glass: the menu's selection pill glides to the open page. The
   // pill is the menu's ::before; this keeps its position in CSS variables.
   useEffect(() => {
     if (theme !== 'glass') {

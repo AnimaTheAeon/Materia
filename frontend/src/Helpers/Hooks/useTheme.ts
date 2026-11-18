@@ -5,7 +5,7 @@ import themes from 'Styles/Themes';
 
 export type MateriaLook = 'materia' | 'green' | 'blades' | 'glass';
 
-// "green" is Box of X, "blades" is Blades, "glass" is Liquid Glass; anything
+// "green" is Xbox, "blades" is Blades, "glass" is Dark Glass; anything
 // else (materia, auto, dark, light) is the FFVII menu.
 export function resolveTheme(theme: string | undefined): MateriaLook {
   return theme === 'green' || theme === 'blades' || theme === 'glass'

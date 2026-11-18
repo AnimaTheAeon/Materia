@@ -10,7 +10,7 @@ export interface MateriaStatus {
   hasError: boolean;
 }
 
-// The status line shared by the FFVII message bar and the Box of X status box,
+// The status line shared by the FFVII message bar and the Xbox status box,
 // so both themes always say the same thing.
 export default function useMateriaStatus(): MateriaStatus {
   const indexers = useSelector((state: AppState) => state.indexers.items);

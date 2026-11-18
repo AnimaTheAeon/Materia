@@ -1,6 +1,6 @@
 import Chart from 'chart.js/auto';
 
-// Chart text and grid lines follow the current theme (FFVII menu or Box of X).
+// Chart text and grid lines follow the current theme (FFVII menu or Xbox).
 export default function applyChartTheme() {
   const style = getComputedStyle(document.documentElement);
   const text = style.getPropertyValue('--textColor').trim();
