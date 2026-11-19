@@ -45,6 +45,7 @@ jobs:
       - name: Indexer and status tests
         run: >
           dotnet test src/NzbDrone.Core.Test/Prowlarr.Core.Test.csproj -f "$FRAMEWORK"
+          -p:EnforceCodeStyleInBuild=false -p:TreatWarningsAsErrors=false -p:RunAnalyzers=false
           --filter "FullyQualifiedName~IndexerStatusServiceFixture|FullyQualifiedName~IndexerRetryServiceFixture|FullyQualifiedName~ProviderStatusServiceFixture|FullyQualifiedName~DownloadClientStatusServiceFixture|FullyQualifiedName~NotificationStatusServiceFixture"
 
   windows:

@@ -79,6 +79,7 @@ namespace NzbDrone.Core.Test.IndexerTests
 
             VerifyNoUpdate();
         }
+
         [Test]
         public void should_clear_every_failure_on_one_success()
         {
