@@ -79,5 +79,53 @@ namespace NzbDrone.Core.Test.IndexerTests
 
             VerifyNoUpdate();
         }
+        [Test]
+        public void should_clear_every_failure_on_one_success()
+        {
+            WithStatus(new IndexerStatus { EscalationLevel = 5, InitialFailure = _epoch - TimeSpan.FromHours(3), DisabledTill = _epoch + TimeSpan.FromMinutes(30) });
+
+            Subject.RecordSuccess(1);
+
+            VerifyUpdate();
+
+            var status = Mocker.GetMock<IIndexerStatusRepository>().Object.FindByProviderId(1);
+            status.EscalationLevel.Should().Be(0);
+            status.DisabledTill.Should().BeNull();
+            status.InitialFailure.Should().BeNull();
+        }
+
+        [Test]
+        public void should_never_wait_longer_than_an_hour_after_failures()
+        {
+            WithStatus(new IndexerStatus { EscalationLevel = 9, InitialFailure = _epoch - TimeSpan.FromDays(2), MostRecentFailure = _epoch - TimeSpan.FromHours(2) });
+
+            Subject.RecordFailure(1);
+
+            var status = Mocker.GetMock<IIndexerStatusRepository>().Object.FindByProviderId(1);
+            status.DisabledTill.Should().HaveValue();
+            status.DisabledTill.Value.Should().BeOnOrBefore(DateTime.UtcNow + TimeSpan.FromHours(1));
+            status.DisabledTill.Value.Should().BeAfter(DateTime.UtcNow + TimeSpan.FromMinutes(59));
+            IndexerStatusService.IsSiteRequestedWait(status).Should().BeFalse();
+        }
+
+        [Test]
+        public void should_keep_a_longer_wait_the_site_asked_for()
+        {
+            WithStatus(new IndexerStatus { EscalationLevel = 0 });
+
+            Subject.RecordFailure(1, TimeSpan.FromHours(6));
+
+            var status = Mocker.GetMock<IIndexerStatusRepository>().Object.FindByProviderId(1);
+            status.DisabledTill.Value.Should().BeAfter(DateTime.UtcNow + TimeSpan.FromHours(5.9));
+            IndexerStatusService.IsSiteRequestedWait(status).Should().BeTrue();
+        }
+
+        [Test]
+        public void old_long_waits_are_not_mistaken_for_site_requests()
+        {
+            var old = new IndexerStatus { EscalationLevel = 9, MostRecentFailure = _epoch, DisabledTill = _epoch + TimeSpan.FromHours(24) };
+
+            IndexerStatusService.IsSiteRequestedWait(old).Should().BeFalse();
+        }
     }
 }

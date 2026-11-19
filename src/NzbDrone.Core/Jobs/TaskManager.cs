@@ -11,6 +11,7 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Housekeeping;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerVersions;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
@@ -80,6 +81,12 @@ namespace NzbDrone.Core.Jobs
                     {
                         Interval = 6 * 60,
                         TypeName = typeof(ApplicationUpdateCheckCommand).FullName
+                    },
+
+                    new ScheduledTask
+                    {
+                        Interval = 15,
+                        TypeName = typeof(RetryUnavailableIndexersCommand).FullName
                     },
 
                     new ScheduledTask

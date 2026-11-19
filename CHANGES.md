@@ -3,6 +3,12 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.22
+
+- Indexers that keep going down (1337x, TorrentDownloads) come back much sooner. After failures an indexer now waits at most 1 hour before Materia tries it again (it used to climb to 24 hours).
+- Every 15 minutes Materia tests each indexer that's sitting out, and puts it straight back into searches as soon as the site answers. It's "Retry Unavailable Indexers" under System > Tasks, where you can also run it by hand.
+- One working search or test now clears all of an indexer's failures, instead of taking off one step at a time. A longer wait the site itself asks for (rate limits) is still respected.
+
 ## 1.5.21
 
 - Fixed: in MC360, pointing at a blade or a menu entry could fill it with a solid blue block, and the menu text came out heavy and bold. The look no longer picks up the app's own button and text styles.

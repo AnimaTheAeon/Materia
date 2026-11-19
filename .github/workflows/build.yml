@@ -34,6 +34,19 @@ jobs:
           name: ui
           path: _output/UI
 
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Indexer and status tests
+        run: >
+          dotnet test src/NzbDrone.Core.Test/Prowlarr.Core.Test.csproj -f "$FRAMEWORK"
+          --filter "FullyQualifiedName~IndexerStatusServiceFixture|FullyQualifiedName~IndexerRetryServiceFixture|FullyQualifiedName~ProviderStatusServiceFixture|FullyQualifiedName~DownloadClientStatusServiceFixture|FullyQualifiedName~NotificationStatusServiceFixture"
+
   windows:
     name: Windows
     needs: ui
@@ -108,7 +121,7 @@ jobs:
 
   release:
     name: Release
-    needs: [windows, synology]
+    needs: [windows, synology, tests]
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
