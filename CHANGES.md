@@ -3,6 +3,10 @@
 Each version's "- " lines become its release notes and show on Materia's Updates page.
 Add a section here before bumping VERSION.
 
+## 1.5.20
+
+- Fixed: after an update the browser could keep using the previous version's MC360 files, so fixes to the look didn't show until a hard refresh. The look's files now load fresh with each new version.
+
 ## 1.5.19
 
 - MC360 now always opens on the menu of the blade you're on (switching looks used to drop you straight onto the page, with the blades parted off the screen until you clicked the blade's edge). It also fits tall or narrow windows: it scales to the window's width as well as its height and centres itself, and it re-checks the size whenever it draws.
