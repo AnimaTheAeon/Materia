@@ -160,7 +160,8 @@ function createMapStateToProps() {
         authenticationEnabled: systemStatus.authentication !== 'none',
         enableColorImpairedMode,
         isGreenTheme: theme === 'green',
-        isBladesTheme: theme === 'blades'
+        isBladesTheme: theme === 'blades',
+        isMc360Theme: theme === 'mc360'
       };
     }
   );

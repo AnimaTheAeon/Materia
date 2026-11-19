@@ -12,7 +12,12 @@ function ApplyTheme() {
     });
 
     // Lets global styles (fonts, upper-case headings) follow the theme.
-    document.documentElement.setAttribute('data-theme', theme);
+    // MC360 pages reuse the Blades page styling.
+    document.documentElement.setAttribute(
+      'data-theme',
+      theme === 'mc360' ? 'blades' : theme
+    );
+    document.documentElement.classList.toggle('mc360', theme === 'mc360');
 
     // Dark Glass: shapes, blur and motion hang off html.glass.
     document.documentElement.classList.toggle('glass', theme === 'glass');

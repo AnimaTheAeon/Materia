@@ -132,6 +132,12 @@ module.exports = (env) => {
                 destination: path.join(distFolder, 'Content/Images')
               },
 
+              // MC360 look: skin pictures, swirl video, sounds, font and engine
+              {
+                source: 'frontend/src/Content/MC360',
+                destination: path.join(distFolder, 'Content/MC360')
+              },
+
               // Robots
               {
                 source: 'frontend/src/Content/robots.txt',

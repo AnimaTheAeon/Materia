@@ -28,7 +28,8 @@ const NEXT_THEME = {
   materia: 'green',
   green: 'blades',
   blades: 'glass',
-  glass: 'materia',
+  glass: 'mc360',
+  mc360: 'materia',
 } as const;
 
 const THEME_LABEL = {
@@ -36,6 +37,7 @@ const THEME_LABEL = {
   green: 'Xbox',
   blades: 'Blades',
   glass: 'Dark Glass',
+  mc360: 'MC360',
 } as const;
 
 function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
@@ -58,7 +60,7 @@ function PageHeaderActionsMenu(props: PageHeaderActionsMenuProps) {
   }, [dispatch]);
 
   const theme = useTheme();
-  // Cycles FFVII menu → Xbox → Blades → Dark Glass → FFVII menu.
+  // Cycles FFVII menu → Xbox → Blades → Dark Glass → MC360 → FFVII menu.
   const nextTheme = NEXT_THEME[theme];
 
   const handleThemePress = useCallback(() => {

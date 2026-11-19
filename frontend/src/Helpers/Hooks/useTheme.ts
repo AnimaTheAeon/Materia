@@ -3,12 +3,15 @@ import { createSelector } from 'reselect';
 import AppState from 'App/State/AppState';
 import themes from 'Styles/Themes';
 
-export type MateriaLook = 'materia' | 'green' | 'blades' | 'glass';
+export type MateriaLook = 'materia' | 'green' | 'blades' | 'glass' | 'mc360';
 
-// "green" is Xbox, "blades" is Blades, "glass" is Dark Glass; anything
+// "green" is Xbox, "blades" is Blades, "glass" is Dark Glass, "mc360" is MC360; anything
 // else (materia, auto, dark, light) is the FFVII menu.
 export function resolveTheme(theme: string | undefined): MateriaLook {
-  return theme === 'green' || theme === 'blades' || theme === 'glass'
+  return theme === 'green' ||
+    theme === 'blades' ||
+    theme === 'glass' ||
+    theme === 'mc360'
     ? theme
     : 'materia';
 }

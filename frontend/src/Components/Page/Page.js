@@ -10,6 +10,7 @@ import locationShape from 'Helpers/Props/Shapes/locationShape';
 import BladesLayout from './Blades/BladesLayout';
 import GreenFrame from './Green/GreenFrame';
 import PageHeader from './Header/PageHeader';
+import Mc360Layout from './Mc360/Mc360Layout';
 import PageStatusBar from './PageStatusBar';
 import PageTimeBox from './PageTimeBox';
 import PageSidebar from './Sidebar/PageSidebar';
@@ -84,6 +85,7 @@ class Page extends Component {
       authenticationEnabled,
       isGreenTheme,
       isBladesTheme,
+      isMc360Theme,
       onSidebarToggle,
       onSidebarVisibleChange
     } = this.props;
@@ -94,6 +96,14 @@ class Page extends Component {
           <SignalRConnector />
 
           {
+            isMc360Theme ?
+              <Mc360Layout location={location}>
+                {children}
+              </Mc360Layout> :
+              null
+          }
+
+          {
             isBladesTheme ?
               <BladesLayout location={location}>
                 {children}
@@ -102,7 +112,7 @@ class Page extends Component {
           }
 
           {
-            !isBladesTheme && (isGreenTheme ?
+            !isBladesTheme && !isMc360Theme && (isGreenTheme ?
               <GreenFrame location={location}>
                 {children}
               </GreenFrame> :
@@ -164,6 +174,7 @@ Page.propTypes = {
   authenticationEnabled: PropTypes.bool.isRequired,
   isGreenTheme: PropTypes.bool.isRequired,
   isBladesTheme: PropTypes.bool,
+  isMc360Theme: PropTypes.bool,
   onResize: PropTypes.func.isRequired,
   onSidebarToggle: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired
